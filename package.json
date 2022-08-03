@@ -1,0 +1,22 @@
+{
+  "name": "job-searching-scheduler",
+  "version": "1.0.0",
+  "description": "",
+  "main": "code.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ririka-kabeshita/job-searching-scheduler.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ririka-kabeshita/job-searching-scheduler/issues"
+  },
+  "homepage": "https://github.com/ririka-kabeshita/job-searching-scheduler#readme",
+  "dependencies": {
+    "@types/google-apps-script": "^1.0.53"
+  }
+}
