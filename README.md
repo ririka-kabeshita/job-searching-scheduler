@@ -1,1 +1,2 @@
-# -Schedule-management
+# job-searching-scheduler
+
