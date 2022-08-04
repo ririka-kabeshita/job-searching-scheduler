@@ -1,10 +1,19 @@
-<div id = "company-entry" class = "no-display">
-    <div class = "header">企業情報の登録</div>
+<div id="company-entry" class="no-display">
+    <div class="header">企業情報の登録</div>
     <div>
-      <div style = "padding-top: 1%;">
-        企業名 <input type = "text" placeholder = "企業名を入力してください" style = "width:400px;">
+      <div style="padding-top: 1%;">
+        企業名 <input id="company-name" type="text" placeholder="企業名を入力してください" style="width:400px;">
       </div>
-      <button type = "submit" style = "margin-top:1%;">登録</button></br>
-      <button onClick = "changeScreen('company-list')" style = "margin-top:1%;">企業一覧</button>
+      <button type="submit" onClick="createCalendar()" style="margin-top:1%;">登録</button></br>
+      <button onClick="changeScreen('company-list')" style="margin-top:1%;">企業一覧</button>
     </div>
 </div>
+<script>
+  function createCalendar(){
+    const companyName = document.getElementById('company-name').value;
+    google.script.run.withSuccessHandler(()=>{
+      alert('登録完了しました');
+      document.getElementById('company-name').value=' ';
+    }).createCompanyCalendar(companyName);
+  }
+</script>
