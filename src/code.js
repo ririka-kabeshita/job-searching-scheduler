@@ -2,6 +2,11 @@ function doGet() {
   return HtmlService.createTemplateFromFile("src/index").evaluate();
 }
 
+/**
+ * 企業ごとのカレンダーを作成する
+ * @param {string} companyName
+ * @returns 作成できた場合はtrue,できなかった場合はnull
+ */
 function createCompanyCalendar(companyName) {
   const result = checkSameCompany(companyName);
   if (result == true) {
@@ -13,11 +18,11 @@ function createCompanyCalendar(companyName) {
     return null;
   }
 }
+
 /**
- * 入力された値がカレンダーに存在する企業出ないかをチェックしたい
- * 　カレンダーを全て取得する
- * 　カレンダーの中で、”就活スケジュール管理”と説明文が入ってるものだけを取得する
- * 　その中から、同じ名前がないかを確認する
+ * 入力された企業と同じ企業のカレンダーは存在しないかをチェックする
+ * @param {string} companyName
+ * @returns ない場合はtrue,ある場合はnull
  */
 function checkSameCompany(companyName) {
   const calendars = CalendarApp.getAllOwnedCalendars();
