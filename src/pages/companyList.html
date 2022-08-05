@@ -5,8 +5,8 @@
       <button onClick="changeScreen('company-entry')">企業追加</button>
       <button onClick="changeScreen('schedule-list')">全ての予定</button>
     </div>
-    <div style="padding: 1%">
-      <div style="font-size: large; padding-top: 1%">
+    <ul style="padding: 1%" id="companys-list">
+      <li style="font-size: large; padding-top: 1%">
         <a>ESM</a>
         <button
           onClick="changeScreen('schedule-list')"
@@ -23,25 +23,36 @@
         <button style="background-color: rgb(219, 25, 25); color: aliceblue">
           削除
         </button>
-      </div>
-      <div style="font-size: large; padding-top: 1%">
-        <a>株式会社〇〇</a>
-        <button
-          onClick="changeScreen('schedule-list')"
-          style="background-color: rgb(255, 213, 0); color: rgb(59, 61, 64)"
-        >
-          スケジュール
-        </button>
-        <button
-          onClick="changeScreen('company-entry')"
-          style="background-color: rgb(39, 166, 45); color: aliceblue"
-        >
-          編集
-        </button>
-        <button style="background-color: rgb(219, 25, 25); color: aliceblue">
-          削除
-        </button>
-      </div>
-    </div>
+      </li>
+    </ul>
   </div>
 </div>
+<script>
+  google.script.run
+    .withSuccessHandler(function (data) {
+      for (let i = 0; i < data.length; i++) {
+        const li = document.createElement("li");
+        const companyList = document.getElementById("companys-list");
+        companyList.appendChild(li);
+        li.innerText = data[i];
+
+        const scheduleBtn = document.createElement("button");
+        scheduleBtn.innerText = "スケジュール";
+        scheduleBtn.setAttribute("class", "schedule-btn");
+        companyList.appendChild(scheduleBtn);
+
+        const fixBtn = document.createElement("button");
+        fixBtn.innerText = "編集";
+        fixBtn.setAttribute("class", "fix-btn");
+        companyList.appendChild(fixBtn);
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.innerText = "削除";
+        deleteBtn.setAttribute("class", "delete-btn");
+        companyList.appendChild(deleteBtn);
+      }
+    })
+    .getAllCompanys();
+
+  function createBtn() {}
+</script>

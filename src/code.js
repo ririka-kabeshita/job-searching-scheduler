@@ -40,3 +40,15 @@ function checkSameCompany(companyName) {
     return null;
   }
 }
+
+function getAllCompanys() {
+  const calendars = CalendarApp.getAllOwnedCalendars();
+  const companyCalender = [];
+  for (let i = 0; i < calendars.length; i++) {
+    const calendarsDiscription = calendars[i].getDescription();
+    if (calendarsDiscription.match("就活スケジュール管理")) {
+      companyCalender.push(calendars[i].getName());
+    }
+  }
+  return (companys = companyCalender);
+}

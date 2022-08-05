@@ -1,52 +1,53 @@
 <html>
-<head>
-  <base target = "_top">
-  <style>
-    .no-display {
-     display: none;
-    }
-    .header {
-      color: aliceblue;
-      background-color: blue;
-      text-align: center;
-      font-weight: bolder;
-      padding: 1%;
-    }
+  <head>
+    <base target="_top" />
+    <style>
+      .no-display {
+        display: none;
+      }
+      .header {
+        color: aliceblue;
+        background-color: blue;
+        text-align: center;
+        font-weight: bolder;
+        padding: 1%;
+      }
     </style>
-</head>
-<body>
-  <?!= HtmlService.createHtmlOutputFromFile('src/pages/companyList').getContent(); ?>
-  <?!= HtmlService.createHtmlOutputFromFile('src/pages/scheduleList').getContent(); ?>
-  <?!= HtmlService.createHtmlOutputFromFile('src/pages/companyEntry').getContent(); ?>
-  <?!= HtmlService.createHtmlOutputFromFile('src/pages/scheduleEntry').getContent(); ?>
-  <script> 
-  function changeScreen(screenName){
-    const companyList= document.getElementById('company-list');
-    const scheduleList= document.getElementById('schedule-list');
-    const companyEntry= document.getElementById('company-entry');
-    const scheduleEntry= document.getElementById('schedule-entry');
+  </head>
+  <body>
+    <?!= HtmlService.createHtmlOutputFromFile('src/pages/companyList').getContent(); ?>
+    <?!= HtmlService.createHtmlOutputFromFile('src/pages/scheduleList').getContent(); ?>
+    <?!= HtmlService.createHtmlOutputFromFile('src/pages/companyEntry').getContent(); ?>
+    <?!= HtmlService.createHtmlOutputFromFile('src/pages/scheduleEntry').getContent(); ?>
+    <script>
+      function changeScreen(screenName) {
+        const companyList = document.getElementById("company-list");
+        const scheduleList = document.getElementById("schedule-list");
+        const companyEntry = document.getElementById("company-entry");
+        const scheduleEntry = document.getElementById("schedule-entry");
 
-    if(screenName === 'company-list'){
-      companyList.setAttribute('class', '');
-      scheduleList.setAttribute('class', 'no-display');
-      companyEntry.setAttribute('class', 'no-display')
-      scheduleEntry.setAttribute('class', 'no-display');
-    } else if(screenName === 'schedule-list') {
-      companyList.setAttribute('class', 'no-display');
-      scheduleList.setAttribute('class', '');
-      companyEntry.setAttribute('class', 'no-display')
-      scheduleEntry.setAttribute('class', 'no-display');
-    } else if(screenName === 'company-entry') {
-      companyList.setAttribute('class', 'no-display');
-      scheduleList.setAttribute('class', 'no-display');
-      companyEntry.setAttribute('class', '')
-      scheduleEntry.setAttribute('class', 'no-display');
-    }else if(screenName === 'schedule-entry') {
-      companyList.setAttribute('class', 'no-display');
-      scheduleList.setAttribute('class', 'no-display');
-      companyEntry.setAttribute('class', 'no-display')
-      scheduleEntry.setAttribute('class', '');
-    }
-  }
-  </script>
-</body>
+        if (screenName === "company-list") {
+          companyList.setAttribute("class", "");
+          scheduleList.setAttribute("class", "no-display");
+          companyEntry.setAttribute("class", "no-display");
+          scheduleEntry.setAttribute("class", "no-display");
+        } else if (screenName === "schedule-list") {
+          companyList.setAttribute("class", "no-display");
+          scheduleList.setAttribute("class", "");
+          companyEntry.setAttribute("class", "no-display");
+          scheduleEntry.setAttribute("class", "no-display");
+        } else if (screenName === "company-entry") {
+          companyList.setAttribute("class", "no-display");
+          scheduleList.setAttribute("class", "no-display");
+          companyEntry.setAttribute("class", "");
+          scheduleEntry.setAttribute("class", "no-display");
+        } else if (screenName === "schedule-entry") {
+          companyList.setAttribute("class", "no-display");
+          scheduleList.setAttribute("class", "no-display");
+          companyEntry.setAttribute("class", "no-display");
+          scheduleEntry.setAttribute("class", "");
+        }
+      }
+    </script>
+  </body>
+</html>
