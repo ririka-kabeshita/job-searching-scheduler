@@ -1,9 +1,55 @@
-<div id = "company-list">
-  <div>企業一覧　画面</div>
+<div id="company-list">
+  <div class="header">企業一覧　画面</div>
   <div>
-    <button onClick = "changeScreen('schedule-list')">全ての予定</button>
-    <button onClick = "changeScreen('schedule-list')">スケジュール</button>
-    <button onClick = "changeScreen('company-entry')">企業追加</button>
-    <button onClick = "changeScreen('company-entry')">編集</button>
+    <div style="padding-top: 1%">
+      <button onClick="changeScreen('company-entry')">企業追加</button>
+      <button onClick="changeScreen('schedule-list')">全ての予定</button>
+    </div>
+    <ul style="padding: 1%" id="companys-list"></ul>
   </div>
 </div>
+<script>
+  google.script.run
+    .withSuccessHandler(function (data) {
+      for (let i = 0; i < data.length; i++) {
+        const li = document.createElement("li");
+        const companyList = document.getElementById("companys-list");
+        companyList.appendChild(li);
+
+        const companyName = document.createElement("a");
+        companyName.innerText = data[i];
+        companyList.appendChild(companyName);
+
+        createBtn(
+          companyList,
+          "scheduleBtn",
+          "スケジュール",
+          "schedule-btn",
+          "changeScreen('schedule-list')"
+        );
+        createBtn(
+          companyList,
+          "fixBtn",
+          "編集",
+          "fix-btn",
+          "changeScreen('company-entry')"
+        );
+        createBtn(
+          companyList,
+          "deleteBtn",
+          "削除",
+          "delete-btn",
+          "changeScreen('company-entry')" // 後から別の機能に変更する。createBtnを使うための応急処置。
+        );
+      }
+    })
+    .getAllCompanys();
+
+  function createBtn(companyList, btnName, inner, className, clickedFunction) {
+    const btn = document.createElement("button");
+    btn.setAttribute("class", className);
+    btn.innerHTML = inner;
+    companyList.appendChild(btn);
+    btn.setAttribute("onclick", clickedFunction);
+  }
+</script>

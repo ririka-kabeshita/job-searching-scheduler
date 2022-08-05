@@ -25,6 +25,20 @@ function createCompanyCalendar(companyName) {
  * @returns ない場合はtrue,ある場合はnull
  */
 function checkSameCompany(companyName) {
+  const companyCalender = getAllCompanys();
+  const result = companyCalender.includes(companyName);
+  if (result == false) {
+    return true;
+  } else {
+    return null;
+  }
+}
+
+/**
+ * "就活スケジュール管理"に該当するカレンダーを全て取得
+ * @returns 全てのカレンダー
+ */
+function getAllCompanys() {
   const calendars = CalendarApp.getAllOwnedCalendars();
   const companyCalender = [];
   for (let i = 0; i < calendars.length; i++) {
@@ -33,10 +47,5 @@ function checkSameCompany(companyName) {
       companyCalender.push(calendars[i].getName());
     }
   }
-  const result = companyCalender.includes(companyName);
-  if (result == false) {
-    return true;
-  } else {
-    return null;
-  }
+  return companyCalender;
 }
