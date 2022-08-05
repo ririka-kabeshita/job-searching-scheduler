@@ -2,8 +2,8 @@
   <div class="header">企業情報の登録</div>
 
   <form style="padding-top: 1%;">
-    企業名 <input id="company-name" type="text" placeholder="企業名を入力してください" style="width:400px;" required>
-    </br>
+    企業名 <input id="company-name" type="text" placeholder="企業名を入力してください" style="width:400px;" > 
+  </br>
     <button type="button" onClick="createCalendar()" style="margin-top:1%;">登録</button></br>
   </form>
   <button onClick="changeScreen('company-list')" style="margin-top:1%;">企業一覧</button>
@@ -11,9 +11,12 @@
 <script>
   function createCalendar(){
     const companyName = document.getElementById('company-name').value;
-    google.script.run.withSuccessHandler(()=>{
-      alert('登録完了しました');
-      document.getElementById('company-name').value=' ';
+    if(!companyName){
+      alert("企業名が未入力です");
+    }
+    google.script.run.withSuccessHandler((data)=>{
+      alert(data ?'登録完了しました' : '失敗しました'); 
+      document.getElementById('company-name').value=null;
     }).createCompanyCalendar(companyName);
   }
 </script>
