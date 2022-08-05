@@ -17,12 +17,12 @@
   function createCalendar(){
     const companyName = document.getElementById('company-name').value;
     const companyDesire=document.getElementById('company-desire').value;
-    if(!companyName){
-      alert("企業名を入力してください");
+    if(!companyName | !companyDesire){
+      alert("企業名と志望度を入力してください");
     }
     google.script.run.withSuccessHandler((data)=>{
       alert(data ?'登録を完了しました' : '同じ企業名のカレンダーが存在します'); 
       document.getElementById('company-name').value=null;
-    }).createCompanyCalendar(companyName);
+    }).createCompanyCalendar(companyName,companyDesire);
   }
 </script>
