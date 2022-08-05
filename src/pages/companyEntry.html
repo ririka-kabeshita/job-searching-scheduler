@@ -1,16 +1,22 @@
 <div id="company-entry" class="no-display">
   <div class="header">企業情報の登録</div>
   <form style="padding-top: 1%;">
-    企業名 <input id="company-name" type="text" placeholder="企業名を入力してください" style="width:400px;" > 
-  </br>
+    企業名 <input id="company-name" type="text" placeholder="企業名を入力してください" style="width:400px;" >
+    </br>
+    志望度 <select id="company-desire">
+      <option value="">-</option>
+      <option value="high">高</option>
+      <option value="middle">中</option>
+      <option value="low">低</option>
+    </select>
+</form>
     <button type="button" onClick="createCalendar()" style="margin-top:1%;">登録</button></br>
-  </form>
   <button onClick="changeScreen('company-list')" style="margin-top:1%;">企業一覧</button>
 </div>
 <script>
   function createCalendar(){
     const companyName = document.getElementById('company-name').value;
-
+    const companyDesire=document.getElementById('company-desire').value;
     if(!companyName){
       alert("企業名を入力してください");
     }
