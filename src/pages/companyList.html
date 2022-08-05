@@ -4,6 +4,13 @@
     <div style="padding-top: 1%">
       <button onClick="changeScreen('company-entry')">企業追加</button>
       <button onClick="changeScreen('schedule-list')">全ての予定</button>
+      志望度
+      <select id="company-desire" onchange="sortByDesire()">
+        <option value="">-</option>
+        <option value="high">高</option>
+        <option value="middle">中</option>
+        <option value="low">低</option>
+      </select>
     </div>
     <ul style="padding: 1%" id="companys-list"></ul>
   </div>
