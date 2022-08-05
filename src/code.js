@@ -7,12 +7,14 @@ function doGet() {
  * @param {string} companyName
  * @returns 作成できた場合はtrue,できなかった場合はnull
  */
-function createCompanyCalendar(companyName) {
+function createCompanyCalendar(companyName, companyDesire) {
   const result = checkSameCompany(companyName);
   if (result == true) {
-    const options = '{createdBy:"就活スケジュール管理 ",aspiration:"後で追加"}';
+    const options = { createdBy: "就活スケジュール管理 " };
+    options.aspiration = companyDesire;
+    const optionsJson = JSON.stringify(options);
     const calendar = CalendarApp.createCalendar(companyName);
-    calendar.setDescription(options);
+    calendar.setDescription(optionsJson);
     return true;
   } else {
     return null;
