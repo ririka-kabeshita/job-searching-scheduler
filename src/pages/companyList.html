@@ -13,20 +13,19 @@
       </select>
     </div>
     <ul style="padding: 1%" id="companys-list"></ul>
+    <ul style="padding: 1%" id="companys-list-by-desire"></ul>
   </div>
 </div>
 <script>
   google.script.run
     .withSuccessHandler(function (data) {
+      const companyList = document.getElementById("companys-list");
       for (let i = 0; i < data.length; i++) {
         const li = document.createElement("li");
-        const companyList = document.getElementById("companys-list");
         companyList.appendChild(li);
-
         const companyName = document.createElement("a");
         companyName.innerText = data[i];
         companyList.appendChild(companyName);
-
         createBtn(
           companyList,
           "scheduleBtn",
@@ -59,4 +58,45 @@
     companyList.appendChild(btn);
     btn.setAttribute("onclick", clickedFunction);
   }
+
+  function sortByDesire() {
+    const companyDesire = document.getElementById("company-desire").value;
+    google.script.run
+      .withSuccessHandler((data) => {
+        document.getElementById("companys-list").style.display = "none";
+        const companyList = document.getElementById("companys-list-by-desire");
+
+        for (let i = 0; i < data.length; i++) {
+          const li = document.createElement("li");
+          companyList.appendChild(li);
+          const companyName = document.createElement("a");
+          companyName.innerText = data[i];
+          companyList.appendChild(companyName);
+          createBtn(
+            companyList,
+            "scheduleBtn",
+            "スケジュール",
+            "schedule-btn",
+            "changeScreen('schedule-list')"
+          );
+          createBtn(
+            companyList,
+            "fixBtn",
+            "編集",
+            "fix-btn",
+            "changeScreen('company-entry')"
+          );
+          createBtn(
+            companyList,
+            "deleteBtn",
+            "削除",
+            "delete-btn",
+            "changeScreen('company-entry')" // 後から別の機能に変更する。createBtnを使うための応急処置。
+          );
+        }
+      })
+      .getCompanysByDesire(companyDesire);
+  }
+
+  function showCompanysList() {}
 </script>
