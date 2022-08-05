@@ -20,25 +20,36 @@
         companyName.innerText = data[i];
         companyList.appendChild(companyName);
 
-        const scheduleBtn = document.createElement("button");
-        scheduleBtn.innerText = "スケジュール";
-        scheduleBtn.setAttribute("class", "schedule-btn");
-        scheduleBtn.setAttribute("onClick", "changeScreen('schedule-list')");
-        companyList.appendChild(scheduleBtn);
-
-        const fixBtn = document.createElement("button");
-        fixBtn.innerText = "編集";
-        fixBtn.setAttribute("class", "fix-btn");
-        fixBtn.setAttribute("onClick", "changeScreen('company-entry')");
-        companyList.appendChild(fixBtn);
-
-        const deleteBtn = document.createElement("button");
-        deleteBtn.innerText = "削除";
-        deleteBtn.setAttribute("class", "delete-btn");
-        companyList.appendChild(deleteBtn);
+        createBtn(
+          companyList,
+          "scheduleBtn",
+          "スケジュール",
+          "schedule-btn",
+          "changeScreen('schedule-list')"
+        );
+        createBtn(
+          companyList,
+          "fixBtn",
+          "編集",
+          "fix-btn",
+          "changeScreen('company-entry')"
+        );
+        createBtn(
+          companyList,
+          "deleteBtn",
+          "削除",
+          "delete-btn",
+          "changeScreen('company-entry')"
+        );
       }
     })
     .getAllCompanys();
 
-  function createBtn() {}
+  function createBtn(companyList, btnName, inner, className, clickedFunction) {
+    const btn = document.createElement("button");
+    btn.setAttribute("class", className);
+    btn.innerHTML = inner;
+    companyList.appendChild(btn);
+    btn.setAttribute("onclick", clickedFunction);
+  }
 </script>
