@@ -53,17 +53,20 @@ function getAllCompanys() {
 }
 
 /**
- * "就活スケジュール管理"に該当するカレンダーを全て取得
- * その中から該当志望度のものをさがす→ 引数はcompanyDesire,返り値は　該当志望度の会社の配列
- * 見つけたものを配列に入れる
+ * 志望度別で企業名を取得
+ * @param {string} companyDesire
+ * @returns 志望度ごとの企業の配列
  */
 function getCompanysByDesire(companyDesire) {
   const calendars = CalendarApp.getAllOwnedCalendars();
   const companyCalender = [];
   for (let i = 0; i < calendars.length; i++) {
     const calendarsDiscription = calendars[i].getDescription();
-    if (calendarsDiscription.includes("就活スケジュール管理") && calendarsDiscription.includes(companyDesire) ){
-       companyCalender.push(calendars[i].getName()); 
+    if (
+      calendarsDiscription.includes("就活スケジュール管理") &&
+      calendarsDiscription.includes(companyDesire)
+    ) {
+      companyCalender.push(calendars[i].getName());
     }
   }
   return companyCalender;
