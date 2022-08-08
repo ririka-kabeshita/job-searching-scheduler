@@ -24,15 +24,17 @@ function saveSchedule(){
 
 if(!title | !date | !startTime | !finishTime){
   alert("タイトル・日付・開始時刻・終了時刻は、必ず入力してください");
+}else if(startTime >= finishTime){
+  alert("開始時刻と終了時刻に誤りがあります。");
 }else{
-  google.script.run.withSuccessHandler((data)=>{
+  google.script.run.withSuccessHandler((data) => {
       alert("予定の登録を完了しました");
-      document.getElementById('title').value=null;
-      document.getElementById('date').value=null;
-      document.getElementById('start-time').value=null;
-      document.getElementById('finish-time').value=null;
-      document.getElementById('place').value=null;
-      document.getElementById('memo').value=null;
+      document.getElementById('title').value = null;
+      document.getElementById('date').value = null;
+      document.getElementById('start-time').value = null;
+      document.getElementById('finish-time').value = null;
+      document.getElementById('place').value = null;
+      document.getElementById('memo').value = null;
     }).createSchedule(title,date,startTime,finishTime,place,memo);
  }
 }
