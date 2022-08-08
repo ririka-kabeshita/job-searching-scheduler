@@ -21,27 +21,27 @@
     .withSuccessHandler(function (data) {
       const companyList = document.getElementById("companys-list");
       for (let i = 0; i < data.length; i++) {
-        const li = document.createElement("li");
-        companyList.appendChild(li);
+        const company = document.createElement("li");
+        companyList.appendChild(company);
         const companyName = document.createElement("a");
         companyName.innerText = data[i];
-        companyList.appendChild(companyName);
+        company.appendChild(companyName);
         createBtn(
-          companyList,
+          company,
           "scheduleBtn",
           "スケジュール",
           "schedule-btn",
           "changeScreen('schedule-list')"
         );
         createBtn(
-          companyList,
+          company,
           "fixBtn",
           "編集",
           "fix-btn",
           "changeScreen('company-entry')"
         );
         createBtn(
-          companyList,
+          company,
           "deleteBtn",
           "削除",
           "delete-btn",
@@ -71,28 +71,28 @@
       .withSuccessHandler((data) => {
         alert(data);
         for (let i = 0; i < data.length; i++) {
-          const li = document.createElement("li");
-          companyList.appendChild(li);
+          const company = document.createElement("li");
+          companyList.appendChild(company);
           const companyName = document.createElement("a");
           companyName.innerText = data[i];
-          companyList.appendChild(companyName);
+          company.appendChild(companyName);
 
           createBtn(
-            companyList,
+            company,
             "scheduleBtn",
             "スケジュール",
             "schedule-btn",
             "changeScreen('schedule-list')"
           );
           createBtn(
-            companyList,
+            company,
             "fixBtn",
             "編集",
             "fix-btn",
             "changeScreen('company-entry')"
           );
           createBtn(
-            companyList,
+            company,
             "deleteBtn",
             "削除",
             "delete-btn",
