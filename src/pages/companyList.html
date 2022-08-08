@@ -69,7 +69,6 @@
 
     google.script.run
       .withSuccessHandler((data) => {
-        alert(data);
         for (let i = 0; i < data.length; i++) {
           const company = document.createElement("li");
           companyList.appendChild(company);
