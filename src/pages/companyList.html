@@ -4,52 +4,78 @@
     <div style="padding-top: 1%">
       <button onClick="changeScreen('company-entry')">企業追加</button>
       <button onClick="changeScreen('schedule-list')">全ての予定</button>
+      志望度
+      <select id="company-desire" onchange="sortByDesire()">
+        <option value="">-</option>
+        <option value="high">高</option>
+        <option value="middle">中</option>
+        <option value="low">低</option>
+      </select>
     </div>
     <ul style="padding: 1%" id="companys-list"></ul>
   </div>
 </div>
 <script>
+  const companyList = document.getElementById("companys-list");
+
   google.script.run
-    .withSuccessHandler(function (data) {
-      for (let i = 0; i < data.length; i++) {
-        const li = document.createElement("li");
-        const companyList = document.getElementById("companys-list");
-        companyList.appendChild(li);
-
-        const companyName = document.createElement("a");
-        companyName.innerText = data[i];
-        companyList.appendChild(companyName);
-
-        createBtn(
-          companyList,
-          "scheduleBtn",
-          "スケジュール",
-          "schedule-btn",
-          "changeScreen('schedule-list')"
-        );
-        createBtn(
-          companyList,
-          "fixBtn",
-          "編集",
-          "fix-btn",
-          "changeScreen('company-entry')"
-        );
-        createBtn(
-          companyList,
-          "deleteBtn",
-          "削除",
-          "delete-btn",
-          "changeScreen('company-entry')" // 後から別の機能に変更する。createBtnを使うための応急処置。
-        );
-      }
+    .withSuccessHandler((data) => {
+      showCompany(data, companyList);
     })
     .getAllCompanys();
 
+  // 志望度を変更した時の処理
+  function sortByDesire() {
+    const companyDesire = document.getElementById("company-desire").value;
+    while (companyList.lastChild) {
+      companyList.removeChild(companyList.lastChild);
+    }
+    google.script.run
+      .withSuccessHandler((data) => {
+        showCompany(data, companyList);
+      })
+      .getCompanysByDesire(companyDesire);
+  }
+
+  //スケジュール・削除・編集ボタンの作成
   function createBtn(companyList, btnName, inner, className, clickedFunction) {
     const btn = document.createElement("button");
     btn.setAttribute("class", className);
     btn.innerHTML = inner;
     companyList.appendChild(btn);
     btn.setAttribute("onclick", clickedFunction);
+  }
+
+  // 企業名＋各ボタンを表示する
+  function showCompany(data, companyList) {
+    for (let i = 0; i < data.length; i++) {
+      const company = document.createElement("li");
+      companyList.appendChild(company);
+      const companyName = document.createElement("a");
+      companyName.innerText = data[i];
+      company.appendChild(companyName);
+
+      createBtn(
+        company,
+        "scheduleBtn",
+        "スケジュール",
+        "schedule-btn",
+        "changeScreen('schedule-list')"
+      );
+      createBtn(
+        company,
+        "fixBtn",
+        "編集",
+        "fix-btn",
+        "changeScreen('company-entry')"
+      );
+      createBtn(
+        company,
+        "deleteBtn",
+        "削除",
+        "delete-btn",
+        "changeScreen('company-entry')" // 後から別の機能に変更する。createBtnを使うための応急処置。
+      );
+    }
   }
 </script>

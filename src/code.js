@@ -51,3 +51,23 @@ function getAllCompanys() {
   }
   return companyCalender;
 }
+
+/**
+ * 志望度別で企業名を取得
+ * @param {string} companyDesire
+ * @returns 志望度ごとの企業の配列
+ */
+function getCompanysByDesire(companyDesire) {
+  const calendars = CalendarApp.getAllOwnedCalendars();
+  const companyCalender = [];
+  for (let i = 0; i < calendars.length; i++) {
+    const calendarsDiscription = calendars[i].getDescription();
+    if (
+      calendarsDiscription.includes("就活スケジュール管理") &&
+      calendarsDiscription.includes(companyDesire)
+    ) {
+      companyCalender.push(calendars[i].getName());
+    }
+  }
+  return companyCalender;
+}
