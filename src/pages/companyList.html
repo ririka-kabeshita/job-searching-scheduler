@@ -61,17 +61,22 @@
 
   function sortByDesire() {
     const companyDesire = document.getElementById("company-desire").value;
+    const companyList = document.getElementById("companys-list-by-desire");
+    document.getElementById("companys-list").style.display = "none";
+    while (companyList.lastChild) {
+      companyList.removeChild(companyList.lastChild);
+    }
+
     google.script.run
       .withSuccessHandler((data) => {
-        document.getElementById("companys-list").style.display = "none";
-        const companyList = document.getElementById("companys-list-by-desire");
-
+        alert(data);
         for (let i = 0; i < data.length; i++) {
           const li = document.createElement("li");
           companyList.appendChild(li);
           const companyName = document.createElement("a");
           companyName.innerText = data[i];
           companyList.appendChild(companyName);
+
           createBtn(
             companyList,
             "scheduleBtn",
