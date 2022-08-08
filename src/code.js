@@ -71,3 +71,20 @@ function getCompanysByDesire(companyDesire) {
   }
   return companyCalender;
 }
+/**
+ * どの会社名に予定を追加するか、会社名を取得
+ * 会社名のところに予定を追加
+ */
+function createSchedule(title, date, startTime, finishTime,place,memo) {
+  const calender = CalendarApp.getCalendarById("ririka.kabeshita@esm.co.jp");
+  calender.createEvent(
+    title,
+    new Date(date + " " + startTime),
+    new Date(date + " " + finishTime),
+    {
+      location: place,
+      description: memo
+    }
+  );
+  // return calender;
+}
