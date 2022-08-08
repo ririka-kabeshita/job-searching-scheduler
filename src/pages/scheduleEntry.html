@@ -22,9 +22,18 @@ function saveSchedule(){
   const place=document.getElementById('place').value;
   const memo=document.getElementById('memo').value;
 
+if(!title | !date | !startTime | !finishTime){
+  alert("タイトル・日付・開始時刻・終了時刻は、必ず入力してください");
+}else{
   google.script.run.withSuccessHandler((data)=>{
       alert("予定の登録を完了しました");
-      form.value=null
+      document.getElementById('title').value=null;
+      document.getElementById('date').value=null;
+      document.getElementById('start-time').value=null;
+      document.getElementById('finish-time').value=null;
+      document.getElementById('place').value=null;
+      document.getElementById('memo').value=null;
     }).createSchedule(title,date,startTime,finishTime,place,memo);
+ }
 }
 </script>
