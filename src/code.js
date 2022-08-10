@@ -46,10 +46,27 @@ function getAllCompanys() {
   for (let i = 0; i < calendars.length; i++) {
     const calendarsDiscription = calendars[i].getDescription();
     if (calendarsDiscription.match("就活スケジュール管理")) {
-      companyCalender.push(calendars[i].getName());
+      companyCalender.push(calendars[i]);
     }
   }
   return companyCalender;
+}
+/**
+ *
+ * @returns
+ */
+function getCompanysInfo() {
+  const calendars = getAllCompanys();
+  const calendarInfo = [];
+
+  calendars.filter((calendar) => {
+    return calendarInfo.push({
+      name: calendar.getName(),
+      id: calendar.getId(),
+      description: calendar.getDescription(),
+    });
+  });
+  return calendarInfo;
 }
 
 /**
@@ -58,32 +75,30 @@ function getAllCompanys() {
  * @returns 志望度ごとの企業の配列
  */
 function getCompanysByDesire(companyDesire) {
-  const calendars = CalendarApp.getAllOwnedCalendars();
-  const companyCalender = [];
-  for (let i = 0; i < calendars.length; i++) {
-    const calendarsDiscription = calendars[i].getDescription();
-    if (
-      calendarsDiscription.includes("就活スケジュール管理") &&
-      calendarsDiscription.includes(companyDesire)
-    ) {
-      companyCalender.push(calendars[i].getName());
-    }
-  }
-  return companyCalender;
+  const calendars = getCompanysInfo();
+  console.log(calendars);
+  const companysByDesire = calendars.filter((company) => {
+    return company.description.includes(companyDesire);
+  });
+
+  return companysByDesire;
 }
+
 /**
  * どの会社名に予定を追加するか、会社名を取得
  * 会社名のところに予定を追加
  */
-function createSchedule(title, date, startTime, finishTime,place,memo) {
-  const calender = CalendarApp.getCalendarById("ririka.kabeshita@esm.co.jp");
+function createSchedule(title, date, startTime, finishTime, place, memo) {
+  const calendarId = getCalendarsId("ESM");
+  console.log(calendarId);
+  const calender = CalendarApp.getCalendarById(calendarId);
   calender.createEvent(
     title,
     new Date(date + " " + startTime),
     new Date(date + " " + finishTime),
     {
       location: place,
-      description: memo
+      description: memo,
     }
   );
   // return calender;

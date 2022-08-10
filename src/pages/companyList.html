@@ -22,7 +22,7 @@
     .withSuccessHandler((data) => {
       showCompany(data, companyList);
     })
-    .getAllCompanys();
+    .getCompanysInfo();
 
   // 志望度を変更した時の処理
   function sortByDesire() {
@@ -49,18 +49,20 @@
   // 企業名＋各ボタンを表示する
   function showCompany(data, companyList) {
     for (let i = 0; i < data.length; i++) {
-      const company = document.createElement("li");
-      companyList.appendChild(company);
-      const companyName = document.createElement("a");
-      companyName.innerText = data[i];
-      company.appendChild(companyName);
+      const companys = document.createElement("li");
+      companyList.appendChild(companys);
+      const company = document.createElement("a");
+      company.innerText = data[i].name;
+      const companyName = company.innerText;
+      // alert(companyName);
+      companys.appendChild(company);
 
       createBtn(
         company,
         "scheduleBtn",
         "スケジュール",
         "schedule-btn",
-        "changeScreen('schedule-list')"
+        "clickScheduleBtn(companyName)"
       );
       createBtn(
         company,
@@ -77,5 +79,11 @@
         "changeScreen('company-entry')" // 後から別の機能に変更する。createBtnを使うための応急処置。
       );
     }
+  }
+
+  function clickScheduleBtn(calendarId) {
+    const a = sessionStorage.setItem("calendarId", calendarId);
+    alert(a);
+    changeScreen("schedule-list");
   }
 </script>
