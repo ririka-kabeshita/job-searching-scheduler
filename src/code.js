@@ -51,9 +51,10 @@ function getAllCompanys() {
   }
   return companyCalender;
 }
+
 /**
- *
- * @returns
+ * カレンダーの名前・ID・説明を取得し、配列に入れる
+ * @returns カレンダーの名前・ID・説明の配列
  */
 function getCompanysInfo() {
   const calendars = getAllCompanys();
