@@ -15,6 +15,7 @@
 </div>
 <script>
 function saveSchedule(){
+  const calendarId=sessionStorage.getItem('id');
   const title=document.getElementById('title').value;
   const date=document.getElementById('date').value;
   const startTime=document.getElementById('start-time').value;
@@ -35,7 +36,7 @@ if(!title | !date | !startTime | !finishTime){
       document.getElementById('finish-time').value=null;
       document.getElementById('place').value=null;
       document.getElementById('memo').value=null;
-    }).createSchedule(title,date,startTime,finishTime,place,memo);
+    }).createSchedule(calendarId,title,date,startTime,finishTime,place,memo);
  }
 }
 </script>

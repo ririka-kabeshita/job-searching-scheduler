@@ -86,12 +86,24 @@ function getCompanysByDesire(companyDesire) {
 }
 
 /**
- * どの会社名に予定を追加するか、会社名を取得
- * 会社名のところに予定を追加
+ * 企業ごとの予定を作成する
+ * @param {*} calendarId
+ * @param {string} title
+ * @param {number} date
+ * @param {number} startTime
+ * @param {number} finishTime
+ * @param {string} place
+ * @param {string} memo
  */
-function createSchedule(title, date, startTime, finishTime, place, memo) {
-  const calendarId = getCalendarsId("ESM");
-  console.log(calendarId);
+function createSchedule(
+  calendarId,
+  title,
+  date,
+  startTime,
+  finishTime,
+  place,
+  memo
+) {
   const calender = CalendarApp.getCalendarById(calendarId);
   calender.createEvent(
     title,
@@ -102,5 +114,4 @@ function createSchedule(title, date, startTime, finishTime, place, memo) {
       description: memo,
     }
   );
-  // return calender;
 }

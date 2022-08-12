@@ -38,12 +38,17 @@
   }
 
   //スケジュール・削除・編集ボタンの作成
-  function createBtn(companyList, btnName, inner, className, clickedFunction) {
+  function createBtn(companyList, btnName, inner, className, btnFunction) {
     const btn = document.createElement("button");
     btn.setAttribute("class", className);
     btn.innerHTML = inner;
+    btn.setAttribute("onclick", btnFunction);
     companyList.appendChild(btn);
-    btn.setAttribute("onclick", clickedFunction);
+  }
+  // スケジュールボタンを押すと、各企業のカレンダーIDをセッションストレージにセットする
+  function clickScheduleBtn(id) {
+    sessionStorage.setItem("id", id);
+    changeScreen("schedule-list");
   }
 
   // 企業名＋各ボタンを表示する
@@ -54,36 +59,18 @@
       const company = document.createElement("a");
       company.innerText = data[i].name;
       const companyName = company.innerText;
-      // alert(companyName);
       companys.appendChild(company);
+      const calendarId = data[i].id;
 
       createBtn(
         company,
         "scheduleBtn",
         "スケジュール",
         "schedule-btn",
-        "clickScheduleBtn(companyName)"
+        `clickScheduleBtn("${calendarId}")`
       );
-      createBtn(
-        company,
-        "fixBtn",
-        "編集",
-        "fix-btn",
-        "changeScreen('company-entry')"
-      );
-      createBtn(
-        company,
-        "deleteBtn",
-        "削除",
-        "delete-btn",
-        "changeScreen('company-entry')" // 後から別の機能に変更する。createBtnを使うための応急処置。
-      );
+      createBtn(company, "fixBtn", "編集", "fix-btn", null);
+      createBtn(company, "deleteBtn", "削除", "delete-btn", null);
     }
-  }
-
-  function clickScheduleBtn(calendarId) {
-    const a = sessionStorage.setItem("calendarId", calendarId);
-    alert(a);
-    changeScreen("schedule-list");
   }
 </script>
