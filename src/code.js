@@ -46,10 +46,28 @@ function getAllCompanys() {
   for (let i = 0; i < calendars.length; i++) {
     const calendarsDiscription = calendars[i].getDescription();
     if (calendarsDiscription.match("就活スケジュール管理")) {
-      companyCalender.push(calendars[i].getName());
+      companyCalender.push(calendars[i]);
     }
   }
   return companyCalender;
+}
+
+/**
+ * カレンダーの名前・ID・説明を取得し、配列に入れる
+ * @returns カレンダーの名前・ID・説明の配列
+ */
+function getCompanysInfo() {
+  const calendars = getAllCompanys();
+  const calendarInfo = [];
+
+  calendars.filter((calendar) => {
+    return calendarInfo.push({
+      name: calendar.getName(),
+      id: calendar.getId(),
+      description: calendar.getDescription(),
+    });
+  });
+  return calendarInfo;
 }
 
 /**
@@ -58,16 +76,42 @@ function getAllCompanys() {
  * @returns 志望度ごとの企業の配列
  */
 function getCompanysByDesire(companyDesire) {
-  const calendars = CalendarApp.getAllOwnedCalendars();
-  const companyCalender = [];
-  for (let i = 0; i < calendars.length; i++) {
-    const calendarsDiscription = calendars[i].getDescription();
-    if (
-      calendarsDiscription.includes("就活スケジュール管理") &&
-      calendarsDiscription.includes(companyDesire)
-    ) {
-      companyCalender.push(calendars[i].getName());
+  const calendars = getCompanysInfo();
+  console.log(calendars);
+  const companysByDesire = calendars.filter((company) => {
+    return company.description.includes(companyDesire);
+  });
+
+  return companysByDesire;
+}
+
+/**
+ * 企業ごとの予定を作成する
+ * @param {*} calendarId
+ * @param {string} title
+ * @param {number} date
+ * @param {number} startTime
+ * @param {number} finishTime
+ * @param {string} place
+ * @param {string} memo
+ */
+function createSchedule(
+  calendarId,
+  title,
+  date,
+  startTime,
+  finishTime,
+  place,
+  memo
+) {
+  const calender = CalendarApp.getCalendarById(calendarId);
+  calender.createEvent(
+    title,
+    new Date(date + " " + startTime),
+    new Date(date + " " + finishTime),
+    {
+      location: place,
+      description: memo,
     }
-  }
-  return companyCalender;
+  );
 }

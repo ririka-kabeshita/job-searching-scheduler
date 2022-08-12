@@ -1,6 +1,42 @@
-<div id = "schedule-entry" class = "no-display">
-    <div>予定登録　画面</div>
-    <div>
-      <button onClick = "changeScreen('schedule-list')">予定一覧</button>
-    </div>
+<div id="schedule-entry" class="no-display">
+  <div class="header">予定登録</div>
+  <form style="padding-top:1%;margin-bottom:5%">
+    <label>タイトル </label><input id="title" placeholder="予定のタイトルを入力してください" style="width:400px; margin-bottom:1%" /><span style="color:red;font-size:13px"> 必須</span></br>
+    <label>日付 </label><input id="date" type="date" style="margin-bottom:1%"/><span style="color:red;font-size:13px"> 必須</span></br>
+    <label>開始時刻 </label> <input id="start-time" type="time" style="margin-bottom:1%"/> <span style="color:red;font-size:13px"> 必須</span> </br>
+    <label>終了時刻 </label><input id="finish-time" type="time"style="margin-bottom:1%"/><span style="color:red;font-size:13px"> 必須</span> </br>
+    <label>場所 </label> <input id="place" style="width:400px;margin-bottom:1%"/></br>
+    <label style="vertical-align:top;">メモ </label><textarea id="memo"style="width:400px;margin-bottom:1%;"></textarea>
+  </form>
+      <button onClick="saveSchedule()"style="margin-bottom:1%">登録</button>
+  <div>
+    <button onClick="changeScreen('schedule-list')">予定一覧</button>
+  </div>
 </div>
+<script>
+function saveSchedule(){
+  const calendarId=sessionStorage.getItem('id');
+  const title=document.getElementById('title').value;
+  const date=document.getElementById('date').value;
+  const startTime=document.getElementById('start-time').value;
+  const finishTime=document.getElementById('finish-time').value;
+  const place=document.getElementById('place').value;
+  const memo=document.getElementById('memo').value;
+
+if(!title | !date | !startTime | !finishTime){
+  alert("タイトル・日付・開始時刻・終了時刻は、必ず入力してください");
+}else if(startTime>=finishTime){
+  alert("開始時刻と終了時刻に誤りがあります。");
+}else{
+  google.script.run.withSuccessHandler((data)=>{
+      alert("予定の登録を完了しました");
+      document.getElementById('title').value=null;
+      document.getElementById('date').value=null;
+      document.getElementById('start-time').value=null;
+      document.getElementById('finish-time').value=null;
+      document.getElementById('place').value=null;
+      document.getElementById('memo').value=null;
+    }).createSchedule(calendarId,title,date,startTime,finishTime,place,memo);
+ }
+}
+</script>
