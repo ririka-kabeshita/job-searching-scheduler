@@ -116,33 +116,41 @@ function createSchedule(
   );
 }
 
-function getSchedules(id){
+function getSchedules(id) {
   const calendar = CalendarApp.getCalendarById(id);
 
   const now = new Date();
-  const aYearFromNow = new Date(now.getTime() + (365 * 24 * 60 * 60 * 1000));//1年間分のデータを取得
+  const aYearFromNow = new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000); //1年間分のデータを取得
 
-  const events=calendar.getEvents(now,aYearFromNow);
-  
-   let messageArray = [];//カレンダーから取得した予定を格納
+  const events = calendar.getEvents(now, aYearFromNow);
 
-   for(let i=0;i<events.length;i++){
-    const month=events[i].getStartTime().getMonth();
-    const day=events[i].getStartTime().getDate();
+  let messageArray = []; //カレンダーから取得した予定を格納
+
+  for (let i = 0; i < events.length; i++) {
+    let date = events[i].getStartTime();
+    date = Utilities.formatDate(date, "JST", "yyyy-MM-dd");
+
     const startHours = "0" + events[i].getStartTime().getHours();
     const startMinutes = "0" + events[i].getStartTime().getMinutes();
-    const startTime = startHours.slice(-2) +":"+ startMinutes.slice(-2); //データ型から文字列に変換
+    const startTime = startHours.slice(-2) + ":" + startMinutes.slice(-2); //データ型から文字列に変換
 
     //予定の終了時刻
     const endHours = "0" + events[i].getEndTime().getHours();
     const endMinutes = "0" + events[i].getEndTime().getMinutes();
-    const endTime = endHours.slice(-2) +":"+ endMinutes.slice(-2); //データ型から文字列に変換
-    let location=events[i].getLocation();
-    let memo=events[i].getDescription();
-    const title =events[i].getTitle();
-  
-    messageArray.push({"month":month,"day":day,"startTime":startTime,"endTime":endTime,"title":title,"location":location,"memo":memo});
-    }
-  //  console.log(messageArray);
-return messageArray;
+    const endTime = endHours.slice(-2) + ":" + endMinutes.slice(-2); //データ型から文字列に変換
+
+    let location = events[i].getLocation();
+    let memo = events[i].getDescription();
+    const title = events[i].getTitle();
+
+    messageArray.push({
+      date: date,
+      startTime: startTime,
+      endTime: endTime,
+      title: title,
+      location: location,
+      memo: memo,
+    });
+  }
+  return messageArray;
 }
