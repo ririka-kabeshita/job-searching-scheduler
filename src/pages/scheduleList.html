@@ -1,8 +1,51 @@
 <div id = "schedule-list" class = "no-display">
-    <div>予定一覧　画面</div>
+    <div class="header">予定一覧　画面</div>
+    <ul id="schedule"></ul>
     <div>
       <button onClick = "changeScreen('schedule-entry')">予定作成</button>
       <button onClick = "changeScreen('schedule-entry')">編集</button>
       <button onClick = "changeScreen('company-list')">企業一覧</button>
     </div>
 </div>
+<script>
+  function list(){
+    const calendarId=sessionStorage.getItem("id");
+    const scheduleList=document.getElementById("schedule");
+    scheduleList.innerHTML=null;
+    google.script.run
+    .withSuccessHandler((data) => {
+       for (let i = 0; i < data.length; i++) {
+      
+        const li=document.createElement("li");
+        scheduleList.appendChild(li);
+        li.setAttribute("class","schedule-list");
+        const title = document.createElement("div");
+        title.innerText="タイトル :　" + data[i].title;
+        const date=document.createElement("div");
+        date.innerText="日付　：　" +data[i].month+"月"+data[i].day+"日";
+
+        const startTime=document.createElement("div");
+        startTime.innerText="開始時刻：　" +data[i].startTime;
+        const endTime=document.createElement("div");
+        endTime.innerText="終了時刻：　" +data[i].endTime;
+
+        const place = document.createElement("div");
+        place.innerText="場所 :　" + data[i].location;
+
+         const memo = document.createElement("div");
+        memo.innerText="memo :　" + data[i].memo;
+
+         const br=document.createElement("br");
+
+         li.appendChild(title);
+          li.appendChild(date);
+        li.appendChild(startTime);
+         li.appendChild(endTime);
+         li.appendChild(place);
+          li.appendChild(memo);
+      } 
+    })
+    .getSchedules(calendarId);
+  }
+
+</script>
