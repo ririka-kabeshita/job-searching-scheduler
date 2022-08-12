@@ -1,9 +1,9 @@
 <div id="company-entry" class="no-display">
   <div class="header">企業情報の登録</div>
-  <form style="padding-top: 1%;">
+  <form style="padding-top: 1%;" name="form">
     企業名 <input id="company-name" type="text" placeholder="企業名を入力してください" style="width:400px;" >
     </br>
-    志望度 <select id="company-desire">
+    志望度 <select name="desire">
       <option value="">-</option>
       <option value="high">高</option>
       <option value="middle">中</option>
@@ -16,13 +16,17 @@
 <script>
   function createCalendar(){
     const companyName = document.getElementById('company-name').value;
-    const companyDesire=document.getElementById('company-desire').value;
-    if(!companyName | !companyDesire){
+    const desire = document.form.desire;
+    const num = desire.selectedIndex;
+    const desireValue = desire.options[num].value;
+   
+    if(!companyName |!desireValue){
       alert("企業名と志望度を入力してください");
+    }else{
+      google.script.run.withSuccessHandler((data)=>{
+        alert(data ?'登録を完了しました' : '同じ企業名のカレンダーが存在します'); 
+        document.getElementById('company-name').value=null;
+        }).createCompanyCalendar(companyName,desireValue);
     }
-    google.script.run.withSuccessHandler((data)=>{
-      alert(data ?'登録を完了しました' : '同じ企業名のカレンダーが存在します'); 
-      document.getElementById('company-name').value=null;
-    }).createCompanyCalendar(companyName,companyDesire);
   }
 </script>
