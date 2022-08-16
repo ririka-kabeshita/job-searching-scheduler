@@ -32,6 +32,9 @@
         alert(data ?'登録を完了しました' : '同じ企業名のカレンダーが存在します'); 
         document.getElementById('company-name').value=null;
         document.getElementById('desire').value=null;
+        const companyList = document.getElementById("companys-list");
+        companyList.innerHTML=null;
+        showCompanyList();
         }).createCompanyCalendar(companyName,desireValue);
     }
   }

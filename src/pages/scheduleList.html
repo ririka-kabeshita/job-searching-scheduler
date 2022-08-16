@@ -24,19 +24,19 @@
             const li = document.createElement("li");
             withinOneWeek.appendChild(li);
             li.setAttribute("class", "within-one-week");
-            createScheduleList(li,data[i]);
+            createScheduleList(li, data[i]);
           } else {
             const li = document.createElement("li");
             scheduleList.appendChild(li);
             li.setAttribute("class", "schedule-list");
-            createScheduleList(li,data[i]);
+            createScheduleList(li, data[i]);
           }
         }
       })
       .getSchedules(calendarId);
   }
 
-//
+  //
   function judgmentWithinOneWeek(date) {
     const today = new Date();
     const event = new Date(date);
@@ -48,7 +48,7 @@
     }
   }
 
-  function createScheduleList(li,data) {
+  function createScheduleList(li, data) {
     const title = document.createElement("div");
     title.innerText = "タイトル : " + data.title;
     const date = document.createElement("div");
@@ -65,8 +65,8 @@
     const memo = document.createElement("div");
     memo.innerText = "memo : " + data.memo;
 
-    const btns= document.createElement("div");
-    btns.setAttribute("class","schedule-btns");
+    const btns = document.createElement("div");
+    btns.setAttribute("class", "schedule-btns");
     const scheduleFixBtn = document.createElement("button");
     scheduleFixBtn.innerText = "編集";
     scheduleFixBtn.setAttribute("class", "fix-btn");
