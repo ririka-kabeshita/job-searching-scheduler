@@ -28,10 +28,10 @@ function createCompanyCalendar(companyName, companyDesire) {
  * @param {*} calenderId カレンダーID
  * @returns 企業情報の変更ができた場合はtrue
  */
-function fixCompanyCalendar(companyName, desireValue, calenderId) {
+function fixCompanyCalendar(companyName, desireValue, calendarId) {
   const result = checkSameCompany(companyName);
   if (result == true) {
-    const calendar = CalendarApp.getCalendarById(calenderId);
+    const calendar = CalendarApp.getCalendarById(calendarId);
     calendar.setName(companyName);
     const options = { createdBy: "就活スケジュール管理 " };
     options.aspiration = desireValue;
@@ -41,6 +41,12 @@ function fixCompanyCalendar(companyName, desireValue, calenderId) {
   } else {
     return null;
   }
+}
+
+//　カレンダーの削除
+function deleteCalendar(calendarId){
+  const calendar = CalendarApp.getCalendarById(calendarId);
+  calendar.deleteCalendar();
 }
 
 /**
