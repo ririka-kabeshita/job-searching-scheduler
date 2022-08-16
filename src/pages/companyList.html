@@ -48,7 +48,7 @@
   // スケジュールボタンを押すと、各企業のカレンダーIDをセッションストレージにセットする
   function clickScheduleBtn(id) {
     sessionStorage.setItem("id", id);
-    list();
+    schedulelist();
     changeScreen("schedule-list");
   }
 

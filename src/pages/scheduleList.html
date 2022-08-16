@@ -9,13 +9,14 @@
   </div>
 </div>
 <script>
-  function list() {
+  function schedulelist() {
     const calendarId = sessionStorage.getItem("id");
     const withinOneWeek = document.getElementById("within-one-week");
     const scheduleList = document.getElementById("schedule");
     scheduleList.innerHTML = null;
     withinOneWeek.innerHTML = null;
 
+    //　リファクタする。ボタンをつける（削除と編集）。
     google.script.run
       .withSuccessHandler((data) => {
         for (let i = 0; i < data.length; i++) {
@@ -40,7 +41,11 @@
             const memo = document.createElement("div");
             memo.innerText = "memo :　" + data[i].memo;
 
-            const br = document.createElement("br");
+            const calendarFixBtn = document.createElement("button");
+            calendarFixBtn.innerText = "編集";
+
+            const calendarDeleteBtn = document.createElement("button");
+            calendarDeleteBtn.innerText = "削除";
 
             li.appendChild(title);
             li.appendChild(date);
@@ -48,14 +53,16 @@
             li.appendChild(endTime);
             li.appendChild(place);
             li.appendChild(memo);
+            li.appendChild(calendarFixBtn);
+            li.appendChild(calendarDeleteBtn);
           } else {
             const li = document.createElement("li");
             scheduleList.appendChild(li);
             li.setAttribute("class", "schedule-list");
             const title = document.createElement("div");
-            title.innerText = "タイトル :　" + data[i].title;
+            title.innerText = "タイトル : " + data[i].title;
             const date = document.createElement("div");
-            date.innerText = "日付　：　" + data[i].date;
+            date.innerText = "日付 : " + data[i].date;
 
             const startTime = document.createElement("div");
             startTime.innerText = "開始時刻：　" + data[i].startTime;
@@ -63,12 +70,16 @@
             endTime.innerText = "終了時刻：　" + data[i].endTime;
 
             const place = document.createElement("div");
-            place.innerText = "場所 :　" + data[i].location;
+            place.innerText = "場所 : " + data[i].location;
 
             const memo = document.createElement("div");
-            memo.innerText = "memo :　" + data[i].memo;
+            memo.innerText = "memo : " + data[i].memo;
 
-            const br = document.createElement("br");
+            const calendarFixBtn = document.createElement("button");
+            calendarFixBtn.innerText = "編集";
+
+            const calendarDeleteBtn = document.createElement("button");
+            calendarDeleteBtn.innerText = "削除";
 
             li.appendChild(title);
             li.appendChild(date);
@@ -76,6 +87,8 @@
             li.appendChild(endTime);
             li.appendChild(place);
             li.appendChild(memo);
+            li.appendChild(calendarFixBtn);
+            li.appendChild(calendarDeleteBtn);
           }
         }
       })
