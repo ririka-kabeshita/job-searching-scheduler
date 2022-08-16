@@ -1,20 +1,27 @@
 <div id="company-entry" class="no-display">
-  <div class="header">企業情報の登録</div>
+  <div class="header" id="campany-entry-header">企業情報の登録</div>
   <form style="padding-top: 1%;" name="form">
     企業名 <input id="company-name" type="text" placeholder="企業名を入力してください" style="width:400px;" >
     </br>
-    志望度 <select name="desire">
+    志望度 <select name="desire" id="desire">
       <option value="">-</option>
       <option value="high">高</option>
       <option value="middle">中</option>
       <option value="low">低</option>
     </select>
 </form>
-    <button type="button" onClick="createCalendar()" style="margin-top:1%;">登録</button></br>
+    <button id="company-entry-btn" type="button" onClick="createCalendar()" style="margin-top:1%;">登録</button></br>
+    <button id="company-fix-btn" type="button"  style="margin-top:1%;" class="no-display" onclick="fixBtn()">更新</button></br>
   <button onClick="changeScreen('company-list')" style="margin-top:1%;">企業一覧</button>
 </div>
 <script>
   function createCalendar(){
+    //ボタンの切り替え
+    const companyEntryBtn=document.getElementById("company-entry-btn");
+    companyEntryBtn.setAttribute("class","");
+    const companyFixBtn=document.getElementById("company-fix-btn");
+    companyFixBtn.setAttribute("class","no-display");
+
     const companyName = document.getElementById('company-name').value;
     const desire = document.form.desire;
     const num = desire.selectedIndex;
@@ -26,7 +33,31 @@
       google.script.run.withSuccessHandler((data)=>{
         alert(data ?'登録を完了しました' : '同じ企業名のカレンダーが存在します'); 
         document.getElementById('company-name').value=null;
+        document.getElementById('desire').value=null;
         }).createCompanyCalendar(companyName,desireValue);
+    }
+  }
+
+  function fixBtn(){
+    const companyName = document.getElementById('company-name').value;
+    const desire = document.form.desire;
+    const num = desire.selectedIndex;
+    const desireValue = desire.options[num].value;
+    const calendarId=sessionStorage.getItem("id");
+        if(!companyName |!desireValue){
+      alert("企業名と志望度を入力してください");
+    }else{
+      google.script.run.withSuccessHandler((data)=>{
+        alert(data ?'企業情報を変更しました' : '同じ企業名のカレンダーが存在します'); 
+        document.getElementById('company-name').value=null;
+        document.getElementById('desire').value=null;
+        //ボタンの切り替え 
+        const companyEntryBtn=document.getElementById("company-entry-btn");
+        companyEntryBtn.setAttribute("class","");
+        const companyFixBtn=document.getElementById("company-fix-btn");
+        companyFixBtn.setAttribute("class","no-display");
+        changeScreen("company-list");
+        }).fixCompanyCalendar(companyName,desireValue,calendarId);
     }
   }
 </script>
