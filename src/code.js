@@ -22,6 +22,28 @@ function createCompanyCalendar(companyName, companyDesire) {
 }
 
 /**
+ * 企業情報の変更をする
+ * @param {*} companyName 変更後のカレンダーの名前
+ * @param {*} desireValue 変更後の志望度
+ * @param {*} calenderId カレンダーID
+ * @returns 企業情報の変更ができた場合はtrue
+ */
+function fixCompanyCalendar(companyName, desireValue, calenderId) {
+  const result = checkSameCompany(companyName);
+  if (result == true) {
+    const calendar = CalendarApp.getCalendarById(calenderId);
+    calendar.setName(companyName);
+    const options = { createdBy: "就活スケジュール管理 " };
+    options.aspiration = desireValue;
+    const optionsJson = JSON.stringify(options);
+    calendar.setDescription(optionsJson);
+    return true;
+  } else {
+    return null;
+  }
+}
+
+/**
  * 入力された企業と同じ企業のカレンダーは存在しないかをチェックする
  * @param {string} companyName
  * @returns ない場合はtrue,ある場合はnull
@@ -126,7 +148,7 @@ function getSchedules(id) {
   for (let i = 0; i < events.length; i++) {
     const title = events[i].getTitle();
     let date = events[i].getStartTime();
-    date = Utilities.formatDate(date, "JST", "yyyy-MM-dd");//データ型から"yyyy-MM-dd"に変換
+    date = Utilities.formatDate(date, "JST", "yyyy-MM-dd"); //データ型から"yyyy-MM-dd"に変換
     //予定の開始時刻
     const startHours = "0" + events[i].getStartTime().getHours();
     const startMinutes = "0" + events[i].getStartTime().getMinutes();
@@ -138,7 +160,7 @@ function getSchedules(id) {
 
     let location = events[i].getLocation();
     let memo = events[i].getDescription();
- 
+
     messageArray.push({
       date: date,
       startTime: startTime,

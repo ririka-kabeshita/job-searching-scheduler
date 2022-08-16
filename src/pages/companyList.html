@@ -17,12 +17,15 @@
 </div>
 <script>
   const companyList = document.getElementById("companys-list");
-
-  google.script.run
-    .withSuccessHandler((data) => {
-      showCompany(data, companyList);
-    })
-    .getCompanysInfo();
+  // 初期画面
+  function showCompanyList() {
+    google.script.run
+      .withSuccessHandler((data) => {
+        showCompany(data, companyList);
+      })
+      .getCompanysInfo();
+  }
+  showCompanyList();
 
   // 志望度を変更した時の処理
   function sortByDesire() {
@@ -52,6 +55,19 @@
     changeScreen("schedule-list");
   }
 
+  //編集ボタンを押すと、企業の名前・志望度を変更できるようにする
+  function fixCalendarBtn(id) {
+    sessionStorage.setItem("id", id);
+    const companyEntryHeader = document.getElementById("campany-entry-header");
+    companyEntryHeader.innerText = "企業情報の編集"; //ボタンの切り替え
+    const companyEntryBtn = document.getElementById("company-entry-btn");
+    companyEntryBtn.setAttribute("class", "no-display");
+    const companyFixBtn = document.getElementById("company-fix-btn");
+    companyFixBtn.setAttribute("class", "");
+
+    changeScreen("company-entry");
+  }
+
   // 企業名＋各ボタンを表示する
   function showCompany(data, companyList) {
     for (let i = 0; i < data.length; i++) {
@@ -70,7 +86,13 @@
         "schedule-btn",
         `clickScheduleBtn("${calendarId}")`
       );
-      createBtn(company, "fixBtn", "編集", "fix-btn", null);
+      createBtn(
+        company,
+        "fixBtn",
+        "編集",
+        "fix-btn",
+        `fixCalendarBtn("${calendarId}")`
+      );
       createBtn(company, "deleteBtn", "削除", "delete-btn", null);
     }
   }
