@@ -11,17 +11,15 @@
     </select>
 </form>
     <button id="company-entry-btn" type="button" onClick="createCalendar()" style="margin-top:1%;">登録</button></br>
-    <button id="company-fix-btn" type="button"  style="margin-top:1%;" class="no-display" onclick="fixBtn()">更新</button></br>
+    <button id="company-fix-btn" type="button"  style="margin-top:1%;" class="no-display" onclick="fixCalendar()">更新</button></br>
   <button onClick="changeScreen('company-list')" style="margin-top:1%;">企業一覧</button>
 </div>
 <script>
   function createCalendar(){
-    //ボタンの切り替え
     const companyEntryBtn=document.getElementById("company-entry-btn");
     companyEntryBtn.setAttribute("class","");
     const companyFixBtn=document.getElementById("company-fix-btn");
     companyFixBtn.setAttribute("class","no-display");
-
     const companyName = document.getElementById('company-name').value;
     const desire = document.form.desire;
     const num = desire.selectedIndex;
@@ -38,7 +36,7 @@
     }
   }
 
-  function fixBtn(){
+  function fixCalendar(){
     const companyName = document.getElementById('company-name').value;
     const desire = document.form.desire;
     const num = desire.selectedIndex;
@@ -56,8 +54,12 @@
         companyEntryBtn.setAttribute("class","");
         const companyFixBtn=document.getElementById("company-fix-btn");
         companyFixBtn.setAttribute("class","no-display");
+        //company-list画面の更新処理
+        const companyList = document.getElementById("companys-list");
+        companyList.innerHTML=null;
+        showCompanyList();
         changeScreen("company-list");
-        }).fixCompanyCalendar(companyName,desireValue,calendarId);
+      }).fixCompanyCalendar(companyName,desireValue,calendarId);
     }
   }
 </script>

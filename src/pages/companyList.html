@@ -17,12 +17,15 @@
 </div>
 <script>
   const companyList = document.getElementById("companys-list");
-
-  google.script.run
-    .withSuccessHandler((data) => {
-      showCompany(data, companyList);
-    })
-    .getCompanysInfo();
+  // 初期画面
+  function showCompanyList() {
+    google.script.run
+      .withSuccessHandler((data) => {
+        showCompany(data, companyList);
+      })
+      .getCompanysInfo();
+  }
+  showCompanyList();
 
   // 志望度を変更した時の処理
   function sortByDesire() {
@@ -53,11 +56,10 @@
   }
 
   //編集ボタンを押すと、企業の名前・志望度を変更できるようにする
-  function fixCalendar(id) {
+  function fixCalendarBtn(id) {
     sessionStorage.setItem("id", id);
     const companyEntryHeader = document.getElementById("campany-entry-header");
-    companyEntryHeader.innerText = "企業情報の編集";
-    //ボタンの切り替え
+    companyEntryHeader.innerText = "企業情報の編集"; //ボタンの切り替え
     const companyEntryBtn = document.getElementById("company-entry-btn");
     companyEntryBtn.setAttribute("class", "no-display");
     const companyFixBtn = document.getElementById("company-fix-btn");
@@ -89,7 +91,7 @@
         "fixBtn",
         "編集",
         "fix-btn",
-        `fixCalendar("${calendarId}")`
+        `fixCalendarBtn("${calendarId}")`
       );
       createBtn(company, "deleteBtn", "削除", "delete-btn", null);
     }

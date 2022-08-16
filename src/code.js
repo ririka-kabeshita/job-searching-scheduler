@@ -21,7 +21,13 @@ function createCompanyCalendar(companyName, companyDesire) {
   }
 }
 
-//企業情報の編集
+/**
+ * 企業情報の変更をする
+ * @param {*} companyName 変更後のカレンダーの名前
+ * @param {*} desireValue 変更後の志望度
+ * @param {*} calenderId カレンダーID
+ * @returns 企業情報の変更ができた場合はtrue
+ */
 function fixCompanyCalendar(companyName, desireValue, calenderId) {
   const result = checkSameCompany(companyName);
   if (result == true) {
