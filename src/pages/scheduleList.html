@@ -35,7 +35,20 @@
       .getSchedules(calendarId);
   }
 
-  //
+  
+function fixScheduleBtn(){
+    const scheduleEntryHeader = document.getElementById("schedule-entry-header");
+    scheduleEntryHeader.innerText = "予定の変更";
+    const saveScheduleBtn=document.getElementById("save-schedule-btn");
+    saveScheduleBtn.innerText="更新";
+    changeScreen("schedule-entry");
+    const calendarId = sessionStorage.getItem("id");
+// google.script.run.withSuccessHandler((data)=>{
+//   document.getElementById("title").value=data.title;
+// }).searchSchedule(calendarId);
+}
+
+
   function judgmentWithinOneWeek(date) {
     const today = new Date();
     const event = new Date(date);
@@ -68,6 +81,7 @@
     btns.setAttribute("class", "schedule-btns");
     const scheduleFixBtn = document.createElement("button");
     scheduleFixBtn.innerText = "編集";
+    scheduleFixBtn.setAttribute("onclick","fixScheduleBtn()")
     scheduleFixBtn.setAttribute("class", "fix-btn");
 
     const scheduleDeleteBtn = document.createElement("button");
