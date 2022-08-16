@@ -16,7 +16,6 @@
     scheduleList.innerHTML = null;
     withinOneWeek.innerHTML = null;
 
-    //　リファクタする。ボタンをつける（削除と編集）。
     google.script.run
       .withSuccessHandler((data) => {
         for (let i = 0; i < data.length; i++) {
@@ -41,11 +40,11 @@
             const memo = document.createElement("div");
             memo.innerText = "memo : " + data[i].memo;
 
-            const calendarFixBtn = document.createElement("button");
-            calendarFixBtn.innerText = "編集";
+            const scheduleFixBtn = document.createElement("button");
+            scheduleFixBtn.innerText = "編集";
 
-            const calendarDeleteBtn = document.createElement("button");
-            calendarDeleteBtn.innerText = "削除";
+            const scheduleDeleteBtn = document.createElement("button");
+            scheduleDeleteBtn.innerText = "削除";
 
             li.appendChild(title);
             li.appendChild(date);
@@ -53,8 +52,8 @@
             li.appendChild(endTime);
             li.appendChild(place);
             li.appendChild(memo);
-            li.appendChild(calendarFixBtn);
-            li.appendChild(calendarDeleteBtn);
+            li.appendChild(scheduleFixBtn);
+            li.appendChild(scheduleDeleteBtn);
           } else {
             const li = document.createElement("li");
             scheduleList.appendChild(li);
@@ -75,11 +74,11 @@
             const memo = document.createElement("div");
             memo.innerText = "memo : " + data[i].memo;
 
-            const calendarFixBtn = document.createElement("button");
-            calendarFixBtn.innerText = "編集";
+            const scheduleFixBtn = document.createElement("button");
+            scheduleFixBtn.innerText = "編集";
 
-            const calendarDeleteBtn = document.createElement("button");
-            calendarDeleteBtn.innerText = "削除";
+            const scheduleDeleteBtn = document.createElement("button");
+            scheduleDeleteBtn.innerText = "削除";
 
             li.appendChild(title);
             li.appendChild(date);
@@ -87,8 +86,8 @@
             li.appendChild(endTime);
             li.appendChild(place);
             li.appendChild(memo);
-            li.appendChild(calendarFixBtn);
-            li.appendChild(calendarDeleteBtn);
+            li.appendChild(scheduleFixBtn);
+            li.appendChild(scheduleDeleteBtn);
           }
         }
       })
