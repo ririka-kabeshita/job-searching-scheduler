@@ -17,7 +17,7 @@
 </div>
 <script>
   const companyList = document.getElementById("companys-list");
-  // 初期画面
+  // company-listの初期画面
   function showCompanyList() {
     google.script.run
       .withSuccessHandler((data) => {
@@ -59,13 +59,28 @@
   function fixCalendarBtn(id) {
     sessionStorage.setItem("id", id);
     const companyEntryHeader = document.getElementById("campany-entry-header");
-    companyEntryHeader.innerText = "企業情報の編集"; //ボタンの切り替え
+    companyEntryHeader.innerText = "企業情報の編集"; 
+    //ボタンの切り替え
     const companyEntryBtn = document.getElementById("company-entry-btn");
     companyEntryBtn.setAttribute("class", "no-display");
     const companyFixBtn = document.getElementById("company-fix-btn");
     companyFixBtn.setAttribute("class", "");
-
     changeScreen("company-entry");
+  }
+
+  //削除ボタンを押した時の処理
+  function deleteCalendarBtn(id){
+    const result=window.confirm("本当に削除してもよろしいですか？");
+    if(result == true){
+      google.script.run.withSuccessHandler(() => {
+       alert("削除しました");
+        const companyList = document.getElementById("companys-list");
+        companyList.innerHTML=null;
+       showCompanyList();
+      }).deleteCalendar(id);
+    }else{
+      alert("中断しました");
+    }
   }
 
   // 企業名＋各ボタンを表示する
@@ -93,7 +108,7 @@
         "fix-btn",
         `fixCalendarBtn("${calendarId}")`
       );
-      createBtn(company, "deleteBtn", "削除", "delete-btn", null);
+      createBtn(company, "deleteBtn", "削除", "delete-btn",`deleteCalendarBtn("${calendarId}")` );
     }
   }
 </script>
