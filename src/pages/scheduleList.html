@@ -19,82 +19,25 @@
     google.script.run
       .withSuccessHandler((data) => {
         for (let i = 0; i < data.length; i++) {
-          const result = checkWithinOneWeek(data[i].date);
+          const result = judgmentWithinOneWeek(data[i].date);
           if (result == true) {
             const li = document.createElement("li");
             withinOneWeek.appendChild(li);
             li.setAttribute("class", "within-one-week");
-            const title = document.createElement("div");
-            title.innerText = "タイトル : " + data[i].title;
-            const date = document.createElement("div");
-            date.innerText = "日付　: " + data[i].date;
-
-            const startTime = document.createElement("div");
-            startTime.innerText = "開始時刻：　" + data[i].startTime;
-            const endTime = document.createElement("div");
-            endTime.innerText = "終了時刻：　" + data[i].endTime;
-
-            const place = document.createElement("div");
-            place.innerText = "場所 : " + data[i].location;
-
-            const memo = document.createElement("div");
-            memo.innerText = "memo : " + data[i].memo;
-
-            const scheduleFixBtn = document.createElement("button");
-            scheduleFixBtn.innerText = "編集";
-
-            const scheduleDeleteBtn = document.createElement("button");
-            scheduleDeleteBtn.innerText = "削除";
-
-            li.appendChild(title);
-            li.appendChild(date);
-            li.appendChild(startTime);
-            li.appendChild(endTime);
-            li.appendChild(place);
-            li.appendChild(memo);
-            li.appendChild(scheduleFixBtn);
-            li.appendChild(scheduleDeleteBtn);
+            createScheduleList(li,data[i]);
           } else {
             const li = document.createElement("li");
             scheduleList.appendChild(li);
             li.setAttribute("class", "schedule-list");
-            const title = document.createElement("div");
-            title.innerText = "タイトル : " + data[i].title;
-            const date = document.createElement("div");
-            date.innerText = "日付 : " + data[i].date;
-
-            const startTime = document.createElement("div");
-            startTime.innerText = "開始時刻：　" + data[i].startTime;
-            const endTime = document.createElement("div");
-            endTime.innerText = "終了時刻：　" + data[i].endTime;
-
-            const place = document.createElement("div");
-            place.innerText = "場所 : " + data[i].location;
-
-            const memo = document.createElement("div");
-            memo.innerText = "memo : " + data[i].memo;
-
-            const scheduleFixBtn = document.createElement("button");
-            scheduleFixBtn.innerText = "編集";
-
-            const scheduleDeleteBtn = document.createElement("button");
-            scheduleDeleteBtn.innerText = "削除";
-
-            li.appendChild(title);
-            li.appendChild(date);
-            li.appendChild(startTime);
-            li.appendChild(endTime);
-            li.appendChild(place);
-            li.appendChild(memo);
-            li.appendChild(scheduleFixBtn);
-            li.appendChild(scheduleDeleteBtn);
+            createScheduleList(li,data[i]);
           }
         }
       })
       .getSchedules(calendarId);
   }
 
-  function checkWithinOneWeek(date) {
+//
+  function judgmentWithinOneWeek(date) {
     const today = new Date();
     const event = new Date(date);
     event.setDate(event.getDate() - 7);
@@ -103,5 +46,43 @@
     } else {
       return;
     }
+  }
+
+  function createScheduleList(li,data) {
+    const title = document.createElement("div");
+    title.innerText = "タイトル : " + data.title;
+    const date = document.createElement("div");
+    date.innerText = "日付 : " + data.date;
+
+    const startTime = document.createElement("div");
+    startTime.innerText = "開始時刻：　" + data.startTime;
+    const endTime = document.createElement("div");
+    endTime.innerText = "終了時刻：　" + data.endTime;
+
+    const place = document.createElement("div");
+    place.innerText = "場所 : " + data.location;
+
+    const memo = document.createElement("div");
+    memo.innerText = "memo : " + data.memo;
+
+    const btns= document.createElement("div");
+    btns.setAttribute("class","schedule-btns");
+    const scheduleFixBtn = document.createElement("button");
+    scheduleFixBtn.innerText = "編集";
+    scheduleFixBtn.setAttribute("class", "fix-btn");
+
+    const scheduleDeleteBtn = document.createElement("button");
+    scheduleDeleteBtn.innerText = "削除";
+    scheduleDeleteBtn.setAttribute("class", "delete-btn");
+    btns.appendChild(scheduleFixBtn);
+    btns.appendChild(scheduleDeleteBtn);
+
+    li.appendChild(title);
+    li.appendChild(date);
+    li.appendChild(startTime);
+    li.appendChild(endTime);
+    li.appendChild(place);
+    li.appendChild(memo);
+    li.appendChild(btns);
   }
 </script>
