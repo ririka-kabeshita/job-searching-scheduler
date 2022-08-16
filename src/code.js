@@ -115,3 +115,38 @@ function createSchedule(
     }
   );
 }
+
+function getSchedules(id) {
+  const calendar = CalendarApp.getCalendarById(id);
+  const now = new Date();
+  const aYearFromNow = new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000); //1年間分のデータを取得
+  const events = calendar.getEvents(now, aYearFromNow);
+  let messageArray = []; //カレンダーから取得した予定を格納
+
+  for (let i = 0; i < events.length; i++) {
+    const title = events[i].getTitle();
+    let date = events[i].getStartTime();
+    date = Utilities.formatDate(date, "JST", "yyyy-MM-dd");//データ型から"yyyy-MM-dd"に変換
+    //予定の開始時刻
+    const startHours = "0" + events[i].getStartTime().getHours();
+    const startMinutes = "0" + events[i].getStartTime().getMinutes();
+    const startTime = startHours.slice(-2) + ":" + startMinutes.slice(-2); //データ型から文字列に変換
+    //予定の終了時刻
+    const endHours = "0" + events[i].getEndTime().getHours();
+    const endMinutes = "0" + events[i].getEndTime().getMinutes();
+    const endTime = endHours.slice(-2) + ":" + endMinutes.slice(-2); //データ型から文字列に変換
+
+    let location = events[i].getLocation();
+    let memo = events[i].getDescription();
+ 
+    messageArray.push({
+      date: date,
+      startTime: startTime,
+      endTime: endTime,
+      title: title,
+      location: location,
+      memo: memo,
+    });
+  }
+  return messageArray;
+}
