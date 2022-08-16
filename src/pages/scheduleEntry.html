@@ -36,6 +36,10 @@ if(!title | !date | !startTime | !finishTime){
       document.getElementById('finish-time').value=null;
       document.getElementById('place').value=null;
       document.getElementById('memo').value=null;
+
+      document.getElementById("within-one-week").value=null;
+      document.getElementById("schedule").value=null;
+      schedulelist();
     }).createSchedule(calendarId,title,date,startTime,finishTime,place,memo);
  }
 }
