@@ -143,7 +143,17 @@ function createSchedule(
     }
   );
 }
-
+/**
+ * スケジュールの変更
+ * @param {string} calendarId
+ * @param {string} eventId
+ * @param {string} title
+ * @param {number} date
+ * @param {number} startTime
+ * @param {number} finishTime
+ * @param {string} place
+ * @param {string} memo
+ */
 function fixCompanySchedule(
   calendarId,
   eventId,
@@ -156,20 +166,16 @@ function fixCompanySchedule(
 ) {
   const calendar = CalendarApp.getCalendarById(calendarId);
   let event = calendar.getEventById(eventId);
-  // const event=calendar.getEventById("vlf9lgja5ctfnaq2r6lm1bk3d4@google.com");
-
   event.setTitle(title);
   event.setTime(
     new Date(date + " " + startTime),
     new Date(date + " " + finishTime)
   );
-  // event.setTime(new Date("2022-08-18 15:00:00"), new Date("2022-08-18 15:00:00"));
   event.setLocation(place);
   event.setDescription(memo);
 }
 
 function getSchedules(id) {
-  // const calendar = CalendarApp.getCalendarById("c_h7b41vjteecllr4j2plapk9h44@group.calendar.google.com");
   const calendar = CalendarApp.getCalendarById(id);
   const now = new Date();
   const aYearFromNow = new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000); //1年間分のデータを取得
@@ -204,6 +210,5 @@ function getSchedules(id) {
       memo: memo,
     });
   }
-  console.log(messageArray);
   return messageArray;
 }
