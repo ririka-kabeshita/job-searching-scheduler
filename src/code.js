@@ -44,7 +44,7 @@ function fixCompanyCalendar(companyName, desireValue, calendarId) {
 }
 
 //　カレンダーの削除
-function deleteCalendar(calendarId){
+function deleteCalendar(calendarId) {
   const calendar = CalendarApp.getCalendarById(calendarId);
   calendar.deleteCalendar();
 }
@@ -143,6 +143,37 @@ function createSchedule(
     }
   );
 }
+/**
+ * スケジュールの変更
+ * @param {string} calendarId
+ * @param {string} eventId
+ * @param {string} title
+ * @param {number} date
+ * @param {number} startTime
+ * @param {number} finishTime
+ * @param {string} place
+ * @param {string} memo
+ */
+function fixCompanySchedule(
+  calendarId,
+  eventId,
+  title,
+  date,
+  startTime,
+  finishTime,
+  place,
+  memo
+) {
+  const calendar = CalendarApp.getCalendarById(calendarId);
+  let event = calendar.getEventById(eventId);
+  event.setTitle(title);
+  event.setTime(
+    new Date(date + " " + startTime),
+    new Date(date + " " + finishTime)
+  );
+  event.setLocation(place);
+  event.setDescription(memo);
+}
 
 function getSchedules(id) {
   const calendar = CalendarApp.getCalendarById(id);
@@ -152,6 +183,8 @@ function getSchedules(id) {
   let messageArray = []; //カレンダーから取得した予定を格納
 
   for (let i = 0; i < events.length; i++) {
+    const eventId = events[i].getId();
+
     const title = events[i].getTitle();
     let date = events[i].getStartTime();
     date = Utilities.formatDate(date, "JST", "yyyy-MM-dd"); //データ型から"yyyy-MM-dd"に変換
@@ -162,15 +195,16 @@ function getSchedules(id) {
     //予定の終了時刻
     const endHours = "0" + events[i].getEndTime().getHours();
     const endMinutes = "0" + events[i].getEndTime().getMinutes();
-    const endTime = endHours.slice(-2) + ":" + endMinutes.slice(-2); //データ型から文字列に変換
+    const finishTime = endHours.slice(-2) + ":" + endMinutes.slice(-2); //データ型から文字列に変換
 
     let location = events[i].getLocation();
     let memo = events[i].getDescription();
 
     messageArray.push({
+      eventId: eventId,
       date: date,
       startTime: startTime,
-      endTime: endTime,
+      finishTime: finishTime,
       title: title,
       location: location,
       memo: memo,
