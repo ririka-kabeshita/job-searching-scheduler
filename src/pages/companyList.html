@@ -79,7 +79,7 @@
           alert("削除しました");
           const companyList = document.getElementById("companys-list");
           companyList.innerHTML = null;
-          showCompanyList();
+          reloadCompanyList();
         })
         .deleteCalendar(id);
     } else {
