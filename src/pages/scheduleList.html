@@ -35,18 +35,43 @@
       .getSchedules(calendarId);
   }
 
-  
-function fixScheduleBtn(id){
-  sessionStorage.setItem("eventId",id);
-    const scheduleEntryHeader = document.getElementById("schedule-entry-header");
+  function fixScheduleBtn(id) {
+    sessionStorage.setItem("eventId", id);
+    const scheduleEntryHeader = document.getElementById(
+      "schedule-entry-header"
+    );
     scheduleEntryHeader.innerText = "予定の変更";
-    const saveScheduleBtn=document.getElementById("save-schedule-btn");
-    saveScheduleBtn.setAttribute("class","no-display");
-    const fixScheduleBtn=document.getElementById("fix-schedule-btn");
-    fixScheduleBtn.setAttribute("class","");
+    const saveScheduleBtn = document.getElementById("save-schedule-btn");
+    saveScheduleBtn.setAttribute("class", "no-display");
+    const fixScheduleBtn = document.getElementById("fix-schedule-btn");
+    fixScheduleBtn.setAttribute("class", "");
     changeScreen("schedule-entry");
-  }
 
+    const eventId = sessionStorage.getItem("eventId");
+    const calendarId = sessionStorage.getItem("id");
+
+    const title = document.getElementById("title");
+    const date = document.getElementById("date");
+    const startTime = document.getElementById("start-time");
+    const finishTime = document.getElementById("finish-time");
+    const place = document.getElementById("place");
+    const memo = document.getElementById("memo");
+
+    google.script.run
+      .withSuccessHandler((data) => {
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].eventId == eventId) {
+            title.value = data[i].title;
+            date.value = data[i].date;
+            startTime.value = data[i].startTime;
+            finishTime.value = data[i].finishTime;
+            place.value = data[i].location;
+            memo.value = data[i].memo;
+          }
+        }
+      })
+      .getSchedules(calendarId);
+  }
 
   function judgmentWithinOneWeek(date) {
     const today = new Date();
@@ -68,7 +93,7 @@ function fixScheduleBtn(id){
     const startTime = document.createElement("div");
     startTime.innerText = "開始時刻：　" + data.startTime;
     const endTime = document.createElement("div");
-    endTime.innerText = "終了時刻：　" + data.endTime;
+    endTime.innerText = "終了時刻：　" + data.finishTime;
 
     const place = document.createElement("div");
     place.innerText = "場所 : " + data.location;
@@ -80,7 +105,7 @@ function fixScheduleBtn(id){
     btns.setAttribute("class", "schedule-btns");
     const scheduleFixBtn = document.createElement("button");
     scheduleFixBtn.innerText = "編集";
-    scheduleFixBtn.setAttribute("onclick",`fixScheduleBtn("${data.eventId}")`);
+    scheduleFixBtn.setAttribute("onclick", `fixScheduleBtn("${data.eventId}")`);
     scheduleFixBtn.setAttribute("class", "fix-btn");
 
     const scheduleDeleteBtn = document.createElement("button");

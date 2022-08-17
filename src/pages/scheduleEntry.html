@@ -58,9 +58,9 @@ if(!title | !date | !startTime | !finishTime){
   if(!title | !date | !startTime | !finishTime){
     alert("タイトル・日付・開始時刻・終了時刻は、必ず入力してください");
   }else if(startTime>=finishTime){
-  alert("開始時刻と終了時刻に誤りがあります。");
+    alert("開始時刻と終了時刻に誤りがあります。");
   }else{
-  google.script.run.withSuccessHandler((data)=>{
+    google.script.run.withSuccessHandler((data)=>{
       alert("予定を更新しました");
       document.getElementById('title').value=null;
       document.getElementById('date').value=null;

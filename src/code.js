@@ -44,7 +44,7 @@ function fixCompanyCalendar(companyName, desireValue, calendarId) {
 }
 
 //　カレンダーの削除
-function deleteCalendar(calendarId){
+function deleteCalendar(calendarId) {
   const calendar = CalendarApp.getCalendarById(calendarId);
   calendar.deleteCalendar();
 }
@@ -144,29 +144,40 @@ function createSchedule(
   );
 }
 
-function fixCompanySchedule(calendarId,eventId,title,date,startTime,finishTime,place,memo){
+function fixCompanySchedule(
+  calendarId,
+  eventId,
+  title,
+  date,
+  startTime,
+  finishTime,
+  place,
+  memo
+) {
   const calendar = CalendarApp.getCalendarById(calendarId);
-  let event= calendar.getEventById(eventId);
+  let event = calendar.getEventById(eventId);
   // const event=calendar.getEventById("vlf9lgja5ctfnaq2r6lm1bk3d4@google.com");
 
   event.setTitle(title);
-  event.setTime(new Date(date + " " + startTime), new Date(date + " " + finishTime));
+  event.setTime(
+    new Date(date + " " + startTime),
+    new Date(date + " " + finishTime)
+  );
   // event.setTime(new Date("2022-08-18 15:00:00"), new Date("2022-08-18 15:00:00"));
   event.setLocation(place);
   event.setDescription(memo);
-  
 }
 
 function getSchedules(id) {
   // const calendar = CalendarApp.getCalendarById("c_h7b41vjteecllr4j2plapk9h44@group.calendar.google.com");
-    const calendar = CalendarApp.getCalendarById(id);
+  const calendar = CalendarApp.getCalendarById(id);
   const now = new Date();
   const aYearFromNow = new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000); //1年間分のデータを取得
   const events = calendar.getEvents(now, aYearFromNow);
   let messageArray = []; //カレンダーから取得した予定を格納
 
   for (let i = 0; i < events.length; i++) {
-    const eventId=events[i].getId();
+    const eventId = events[i].getId();
 
     const title = events[i].getTitle();
     let date = events[i].getStartTime();
@@ -178,16 +189,16 @@ function getSchedules(id) {
     //予定の終了時刻
     const endHours = "0" + events[i].getEndTime().getHours();
     const endMinutes = "0" + events[i].getEndTime().getMinutes();
-    const endTime = endHours.slice(-2) + ":" + endMinutes.slice(-2); //データ型から文字列に変換
+    const finishTime = endHours.slice(-2) + ":" + endMinutes.slice(-2); //データ型から文字列に変換
 
     let location = events[i].getLocation();
     let memo = events[i].getDescription();
 
     messageArray.push({
-      eventId:eventId,
+      eventId: eventId,
       date: date,
       startTime: startTime,
-      endTime: endTime,
+      finishTime: finishTime,
       title: title,
       location: location,
       memo: memo,
