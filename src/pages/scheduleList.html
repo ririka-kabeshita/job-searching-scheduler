@@ -101,6 +101,41 @@
     }
   }
 
+  function allSchedules() {
+    changeScreen("schedule-list");
+
+    const withinOneWeek = document.getElementById("within-one-week");
+    const scheduleList = document.getElementById("schedule");
+    scheduleList.innerHTML = null;
+    withinOneWeek.innerHTML = null;
+    google.script.run
+      .withSuccessHandler((data) => {
+        for (let y = 0; y < data.length; y++) {
+          for (let i = 0; i < data[y].length; i++) {
+            const result = judgmentWithinOneWeek(data[y][i].date);
+            if (result == true) {
+              const li = document.createElement("li");
+              withinOneWeek.appendChild(li);
+              li.setAttribute("class", "within-one-week");
+              const companyName = document.createElement("div");
+              companyName.innerText = "会社名 : " + data[y][i].companyName;
+              li.appendChild(companyName);
+              createScheduleList(li, data[y][i]);
+            } else {
+              const li = document.createElement("li");
+              scheduleList.appendChild(li);
+              li.setAttribute("class", "schedule-list");
+              const companyName = document.createElement("div");
+              companyName.innerText = "会社名 : " + data[y][i].companyName;
+              li.appendChild(companyName);
+              createScheduleList(li, data[y][i]);
+            }
+          }
+        }
+      })
+      .getAllSchedule();
+  }
+
   function createScheduleList(li, data) {
     const title = document.createElement("div");
     title.innerText = "タイトル : " + data.title;
