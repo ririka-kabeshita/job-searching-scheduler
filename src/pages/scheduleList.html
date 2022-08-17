@@ -10,6 +10,7 @@
 <script>
   function schedulelist() {
     const calendarId = sessionStorage.getItem("id");
+
     const withinOneWeek = document.getElementById("within-one-week");
     const scheduleList = document.getElementById("schedule");
     scheduleList.innerHTML = null;
@@ -74,6 +75,21 @@
       .getSchedules(calendarId);
   }
 
+function deleteScheduleBtn(eventId,title){
+  const calendarId=sessionStorage.getItem("id");
+   const result = window.confirm(`${title}を削除しますか？`);
+    if (result == true) {
+      google.script.run
+        .withSuccessHandler(() => {
+          alert("削除しました");
+          schedulelist();
+        })
+        .deleteSchedule(calendarId,eventId);
+    } else {
+      alert("中断しました");
+    }
+}
+
   function judgmentWithinOneWeek(date) {
     const today = new Date();
     const event = new Date(date);
@@ -111,6 +127,7 @@
 
     const scheduleDeleteBtn = document.createElement("button");
     scheduleDeleteBtn.innerText = "削除";
+    scheduleDeleteBtn.setAttribute("onclick", `deleteScheduleBtn("${data.eventId}","${data.title}")`);
     scheduleDeleteBtn.setAttribute("class", "delete-btn");
     btns.appendChild(scheduleFixBtn);
     btns.appendChild(scheduleDeleteBtn);

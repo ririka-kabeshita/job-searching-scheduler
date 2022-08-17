@@ -212,3 +212,9 @@ function getSchedules(id) {
   }
   return messageArray;
 }
+
+function deleteSchedule(calendarId,eventId){
+  const calendar = CalendarApp.getCalendarById(calendarId);
+  const event=calendar.getEventById(eventId);
+  event.deleteEvent();
+}
