@@ -12,7 +12,7 @@
 </form>
     <button id="company-entry-btn" type="button" onClick="createCalendar()" style="margin-top:1%;">登録</button></br>
     <button id="company-fix-btn" type="button"  style="margin-top:1%;" class="no-display" onclick="fixCalendar()">更新</button></br>
-  <button onClick="changeScreen('company-list')" style="margin-top:1%;">企業一覧</button>
+  <button onClick="reloadCompanyEntry()" style="margin-top:1%;">企業一覧</button>
 </div>
 <script>
   function createCalendar(){
@@ -51,18 +51,24 @@
       google.script.run.withSuccessHandler((data)=>{
         alert(data ?'企業情報を変更しました' : '同じ企業名のカレンダーが存在します'); 
         document.getElementById('company-name').value=null;
-        document.getElementById('desire').value=null;
-        //ボタンの切り替え 
-        const companyEntryBtn=document.getElementById("company-entry-btn");
-        companyEntryBtn.setAttribute("class","");
-        const companyFixBtn=document.getElementById("company-fix-btn");
-        companyFixBtn.setAttribute("class","no-display");
-        //company-list画面の更新処理
+        document.getElementById('desire').value='';
+        reloadCompanyEntry();
+        // 企業一覧画面の初期化
         const companyList = document.getElementById("companys-list");
         companyList.innerHTML=null;
-        showCompanyList();
+        reloadCompanyList();
         changeScreen("company-list");
       }).fixCompanyCalendar(companyName,desireValue,calendarId);
     }
   }
+
+function reloadCompanyEntry(){
+  const companyEntryHeader=document.getElementById("campany-entry-header");
+  companyEntryHeader.value="企業情報の登録";
+  const companyEntryBtn=document.getElementById("company-entry-btn");
+  companyEntryBtn.setAttribute("class","");
+  const companyFixBtn=document.getElementById("company-fix-btn");
+  companyFixBtn.setAttribute("class","no-display");
+  changeScreen('company-list');
+}
 </script>
