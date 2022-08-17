@@ -17,15 +17,15 @@
 </div>
 <script>
   const companyList = document.getElementById("companys-list");
-  // company-listの初期画面
-  function showCompanyList() {
+  // 会社一覧の初期画面
+  function reloadCompanyList() {
     google.script.run
       .withSuccessHandler((data) => {
         showCompany(data, companyList);
       })
       .getCompanysInfo();
   }
-  showCompanyList();
+  reloadCompanyList();
 
   // 志望度を変更した時の処理
   function sortByDesire() {
@@ -48,6 +48,7 @@
     btn.setAttribute("onclick", btnFunction);
     companyList.appendChild(btn);
   }
+
   // スケジュールボタンを押すと、各企業のカレンダーIDをセッションストレージにセットする
   function clickScheduleBtn(id) {
     sessionStorage.setItem("id", id);
@@ -60,7 +61,8 @@
     sessionStorage.setItem("id", id);
     const companyEntryHeader = document.getElementById("campany-entry-header");
     companyEntryHeader.innerText = "企業情報の編集";
-    //ボタンの切り替え
+
+    // 企業登録画面から更新画面への切り替え
     const companyEntryBtn = document.getElementById("company-entry-btn");
     companyEntryBtn.setAttribute("class", "no-display");
     const companyFixBtn = document.getElementById("company-fix-btn");
