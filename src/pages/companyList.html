@@ -51,6 +51,8 @@
 
   // スケジュールボタンを押すと、各企業のカレンダーIDをセッションストレージにセットする
   function clickScheduleBtn(id) {
+    const scheduleEntry = document.getElementById("schedule-entry-btn");
+    scheduleEntry.setAttribute("class", "");
     sessionStorage.setItem("id", id);
     schedulelist();
     changeScreen("schedule-list");

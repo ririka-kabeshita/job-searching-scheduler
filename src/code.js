@@ -209,7 +209,7 @@ function getSchedules(id) {
     let memo = events[i].getDescription();
 
     messageArray.push({
-      calendarId:id,
+      calendarId: id,
       companyName: companyName,
       eventId: eventId,
       date: date,

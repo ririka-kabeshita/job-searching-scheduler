@@ -1,7 +1,13 @@
 <div id="schedule-list" class="no-display">
   <div class="header">予定一覧　画面</div>
   <div>
-    <button onClick="changeScreen('schedule-entry')">予定作成</button>
+    <button
+      id="schedule-entry-btn"
+      onClick="changeScreen('schedule-entry')"
+      class="no-display"
+    >
+      予定作成
+    </button>
     <button onClick="changeScreen('company-list')">企業一覧</button>
   </div>
   <ul id="within-one-week"></ul>
@@ -82,7 +88,6 @@
         .withSuccessHandler(() => {
           alert("削除しました");
           schedulelist();
-          //全てのスケジュール　or 企業の企業のスケジュールリストが再表示されたいかをどう判断する？
         })
         .deleteSchedule(calendarId, eventId);
     } else {
@@ -97,7 +102,6 @@
         .withSuccessHandler(() => {
           alert("削除しました");
           allSchedules();
-          //全てのスケジュール　or 企業の企業のスケジュールリストが再表示されたいかをどう判断する？
         })
         .deleteSchedule(calendarId, eventId);
     } else {
@@ -117,6 +121,8 @@
   }
 
   function allSchedules() {
+    const scheduleEntry = document.getElementById("schedule-entry-btn");
+    scheduleEntry.setAttribute("class", "no-display");
     changeScreen("schedule-list");
     const withinOneWeek = document.getElementById("within-one-week");
     const scheduleList = document.getElementById("schedule");
@@ -133,6 +139,7 @@
         let sortResult = arr.sort(function (a, b) {
           return a.date < b.date ? -1 : 1;
         });
+        console.log(sortResult);
         for (let i = 0; i < sortResult.length; i++) {
           const result = judgmentWithinOneWeek(sortResult[i].date);
           if (result == true) {
