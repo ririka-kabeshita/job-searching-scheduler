@@ -178,6 +178,7 @@ function fixCompanySchedule(
 function getAllSchedule() {
   const allCalendar = getCompanysInfo();
   const allCalendarInfo = allCalendar.map((data) => getSchedules(data.id));
+  console.log(allCalendarInfo);
   return allCalendarInfo;
 }
 
@@ -208,6 +209,7 @@ function getSchedules(id) {
     let memo = events[i].getDescription();
 
     messageArray.push({
+      calendarId:id,
       companyName: companyName,
       eventId: eventId,
       date: date,

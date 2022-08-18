@@ -1,11 +1,12 @@
 <div id="schedule-list" class="no-display">
   <div class="header">予定一覧　画面</div>
-  <ul id="within-one-week"></ul>
-  <ul id="schedule"></ul>
   <div>
     <button onClick="changeScreen('schedule-entry')">予定作成</button>
     <button onClick="changeScreen('company-list')">企業一覧</button>
   </div>
+  <ul id="within-one-week"></ul>
+  <ul id="schedule"></ul>
+  
 </div>
 <script>
   function schedulelist() {
@@ -36,8 +37,9 @@
       .getSchedules(calendarId);
   }
 
-  function fixScheduleBtn(id) {
-    sessionStorage.setItem("eventId", id);
+  function fixScheduleBtn(eventid,calendarid) {
+    sessionStorage.setItem("eventId", eventid);
+    sessionStorage.setItem("id",calendarid);//カレンダーIDをセットする必要がある。
     const scheduleEntryHeader = document.getElementById(
       "schedule-entry-header"
     );
@@ -103,17 +105,19 @@
 
   function allSchedules() {
     changeScreen("schedule-list");
-
     const withinOneWeek = document.getElementById("within-one-week");
     const scheduleList = document.getElementById("schedule");
     scheduleList.innerHTML = null;
     withinOneWeek.innerHTML = null;
+
     google.script.run
       .withSuccessHandler((data) => {
+        //yは登録されてる会社の数、iは会社のスケジュール数
         for (let y = 0; y < data.length; y++) {
           for (let i = 0; i < data[y].length; i++) {
             const result = judgmentWithinOneWeek(data[y][i].date);
             if (result == true) {
+
               const li = document.createElement("li");
               withinOneWeek.appendChild(li);
               li.setAttribute("class", "within-one-week");
@@ -121,6 +125,7 @@
               companyName.innerText = "会社名 : " + data[y][i].companyName;
               li.appendChild(companyName);
               createScheduleList(li, data[y][i]);
+
             } else {
               const li = document.createElement("li");
               scheduleList.appendChild(li);
@@ -157,7 +162,7 @@
     btns.setAttribute("class", "schedule-btns");
     const scheduleFixBtn = document.createElement("button");
     scheduleFixBtn.innerText = "編集";
-    scheduleFixBtn.setAttribute("onclick", `fixScheduleBtn("${data.eventId}")`);
+    scheduleFixBtn.setAttribute("onclick", `fixScheduleBtn("${data.eventId}","${data.calendarId}")`);
     scheduleFixBtn.setAttribute("class", "fix-btn");
 
     const scheduleDeleteBtn = document.createElement("button");
