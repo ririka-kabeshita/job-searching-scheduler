@@ -175,8 +175,16 @@ function fixCompanySchedule(
   event.setDescription(memo);
 }
 
+function getAllSchedule() {
+  const allCalendar = getCompanysInfo();
+  const allCalendarInfo = allCalendar.map((data) => getSchedules(data.id));
+  console.log(allCalendarInfo);
+  return allCalendarInfo;
+}
+
 function getSchedules(id) {
   const calendar = CalendarApp.getCalendarById(id);
+  const companyName = calendar.getName();
   const now = new Date();
   const aYearFromNow = new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000); //1年間分のデータを取得
   const events = calendar.getEvents(now, aYearFromNow);
@@ -201,6 +209,8 @@ function getSchedules(id) {
     let memo = events[i].getDescription();
 
     messageArray.push({
+      calendarId: id,
+      companyName: companyName,
       eventId: eventId,
       date: date,
       startTime: startTime,
@@ -213,8 +223,8 @@ function getSchedules(id) {
   return messageArray;
 }
 
-function deleteSchedule(calendarId,eventId){
+function deleteSchedule(calendarId, eventId) {
   const calendar = CalendarApp.getCalendarById(calendarId);
-  const event=calendar.getEventById(eventId);
+  const event = calendar.getEventById(eventId);
   event.deleteEvent();
 }

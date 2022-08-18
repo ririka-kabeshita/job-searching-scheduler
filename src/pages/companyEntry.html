@@ -31,10 +31,10 @@
       google.script.run.withSuccessHandler((data)=>{
         alert(data ?'登録を完了しました' : '同じ企業名のカレンダーが存在します'); 
         document.getElementById('company-name').value=null;
-        document.getElementById('desire').value=null;
+        document.getElementById('desire').value="-";
         const companyList = document.getElementById("companys-list");
         companyList.innerHTML=null;
-        showCompanyList();
+        reloadCompanyList();
         }).createCompanyCalendar(companyName,desireValue);
     }
   }

@@ -1,16 +1,21 @@
 <div id="schedule-list" class="no-display">
   <div class="header">予定一覧　画面</div>
-  <ul id="within-one-week"></ul>
-  <ul id="schedule"></ul>
   <div>
-    <button onClick="changeScreen('schedule-entry')">予定作成</button>
+    <button
+      id="schedule-entry-btn"
+      onClick="changeScreen('schedule-entry')"
+      class="no-display"
+    >
+      予定作成
+    </button>
     <button onClick="changeScreen('company-list')">企業一覧</button>
   </div>
+  <ul id="within-one-week"></ul>
+  <ul id="schedule"></ul>
 </div>
 <script>
   function schedulelist() {
     const calendarId = sessionStorage.getItem("id");
-
     const withinOneWeek = document.getElementById("within-one-week");
     const scheduleList = document.getElementById("schedule");
     scheduleList.innerHTML = null;
@@ -36,8 +41,9 @@
       .getSchedules(calendarId);
   }
 
-  function fixScheduleBtn(id) {
-    sessionStorage.setItem("eventId", id);
+  function fixScheduleBtn(eventid, calendarid) {
+    sessionStorage.setItem("eventId", eventid);
+    sessionStorage.setItem("id", calendarid); //カレンダーIDをセットする必要がある。
     const scheduleEntryHeader = document.getElementById(
       "schedule-entry-header"
     );
@@ -75,20 +81,33 @@
       .getSchedules(calendarId);
   }
 
-function deleteScheduleBtn(eventId,title){
-  const calendarId=sessionStorage.getItem("id");
-   const result = window.confirm(`${title}を削除しますか？`);
+  function deleteScheduleBtn(calendarId, eventId, title) {
+    const result = window.confirm(`${title}を削除しますか？`);
     if (result == true) {
       google.script.run
         .withSuccessHandler(() => {
           alert("削除しました");
           schedulelist();
         })
-        .deleteSchedule(calendarId,eventId);
+        .deleteSchedule(calendarId, eventId);
     } else {
       alert("中断しました");
     }
-}
+  }
+
+  function DeleteScheduleBtnOfAllData(calendarId, eventId, title) {
+    const result = window.confirm(`${title}を削除しますか？`);
+    if (result == true) {
+      google.script.run
+        .withSuccessHandler(() => {
+          alert("削除しました");
+          allSchedules();
+        })
+        .deleteSchedule(calendarId, eventId);
+    } else {
+      alert("中断しました");
+    }
+  }
 
   function judgmentWithinOneWeek(date) {
     const today = new Date();
@@ -99,6 +118,137 @@ function deleteScheduleBtn(eventId,title){
     } else {
       return;
     }
+  }
+
+  function allSchedules() {
+    const scheduleEntry = document.getElementById("schedule-entry-btn");
+    scheduleEntry.setAttribute("class", "no-display");
+    changeScreen("schedule-list");
+    const withinOneWeek = document.getElementById("within-one-week");
+    const scheduleList = document.getElementById("schedule");
+    scheduleList.innerHTML = null;
+    withinOneWeek.innerHTML = null;
+
+    google.script.run
+      .withSuccessHandler((data) => {
+        // 二次元配列を一次元配列に変換
+        const arr = data.reduce(function (dataComapny, dataSchedule) {
+          return dataComapny.concat(dataSchedule);
+        });
+        //昇順ソート
+        let sortResult = arr.sort(function (a, b) {
+          return a.date < b.date ? -1 : 1;
+        });
+        console.log(sortResult);
+        for (let i = 0; i < sortResult.length; i++) {
+          const result = judgmentWithinOneWeek(sortResult[i].date);
+          if (result == true) {
+            const li = document.createElement("li");
+            withinOneWeek.appendChild(li);
+            li.setAttribute("class", "within-one-week");
+            const companyName = document.createElement("div");
+            companyName.innerText = "会社名 : " + sortResult[i].companyName;
+            li.appendChild(companyName);
+            // createScheduleList(li, sortResult[i]);
+
+            const title = document.createElement("div");
+            title.innerText = "タイトル : " + sortResult[i].title;
+            const date = document.createElement("div");
+            date.innerText = "日付 : " + sortResult[i].date;
+
+            const startTime = document.createElement("div");
+            startTime.innerText = "開始時刻：　" + sortResult[i].startTime;
+            const endTime = document.createElement("div");
+            endTime.innerText = "終了時刻：　" + sortResult[i].finishTime;
+
+            const place = document.createElement("div");
+            place.innerText = "場所 : " + sortResult[i].location;
+
+            const memo = document.createElement("div");
+            memo.innerText = "memo : " + sortResult[i].memo;
+
+            const btns = document.createElement("div");
+            btns.setAttribute("class", "schedule-btns");
+            const scheduleFixBtn = document.createElement("button");
+            scheduleFixBtn.innerText = "編集";
+            scheduleFixBtn.setAttribute(
+              "onclick",
+              `fixScheduleBtn("${sortResult[i].eventId}","${sortResult[i].calendarId}")`
+            );
+            scheduleFixBtn.setAttribute("class", "fix-btn");
+
+            const scheduleDeleteBtn = document.createElement("button");
+            scheduleDeleteBtn.innerText = "削除";
+            scheduleDeleteBtn.setAttribute(
+              "onclick",
+              `DeleteScheduleBtnOfAllData("${sortResult[i].calendarId}","${sortResult[i].eventId}","${sortResult[i].title}")`
+            );
+            scheduleDeleteBtn.setAttribute("class", "delete-btn");
+            btns.appendChild(scheduleFixBtn);
+            btns.appendChild(scheduleDeleteBtn);
+
+            li.appendChild(title);
+            li.appendChild(date);
+            li.appendChild(startTime);
+            li.appendChild(endTime);
+            li.appendChild(place);
+            li.appendChild(memo);
+            li.appendChild(btns);
+          } else {
+            const li = document.createElement("li");
+            scheduleList.appendChild(li);
+            li.setAttribute("class", "schedule-list");
+            const companyName = document.createElement("div");
+            companyName.innerText = "会社名 : " + sortResult[i].companyName;
+            li.appendChild(companyName);
+            // createScheduleList(li, sortResult[i]);
+            const title = document.createElement("div");
+            title.innerText = "タイトル : " + sortResult[i].title;
+            const date = document.createElement("div");
+            date.innerText = "日付 : " + sortResult[i].date;
+
+            const startTime = document.createElement("div");
+            startTime.innerText = "開始時刻：　" + sortResult[i].startTime;
+            const endTime = document.createElement("div");
+            endTime.innerText = "終了時刻：　" + sortResult[i].finishTime;
+
+            const place = document.createElement("div");
+            place.innerText = "場所 : " + sortResult[i].location;
+
+            const memo = document.createElement("div");
+            memo.innerText = "memo : " + sortResult[i].memo;
+
+            const btns = document.createElement("div");
+            btns.setAttribute("class", "schedule-btns");
+            const scheduleFixBtn = document.createElement("button");
+            scheduleFixBtn.innerText = "編集";
+            scheduleFixBtn.setAttribute(
+              "onclick",
+              `fixScheduleBtn("${sortResult[i].eventId}","${sortResult[i].calendarId}")`
+            );
+            scheduleFixBtn.setAttribute("class", "fix-btn");
+
+            const scheduleDeleteBtn = document.createElement("button");
+            scheduleDeleteBtn.innerText = "削除";
+            scheduleDeleteBtn.setAttribute(
+              "onclick",
+              `DeleteScheduleBtnOfAllData("${sortResult[i].calendarId}","${sortResult[i].eventId}","${sortResult[i].title}")`
+            );
+            scheduleDeleteBtn.setAttribute("class", "delete-btn");
+            btns.appendChild(scheduleFixBtn);
+            btns.appendChild(scheduleDeleteBtn);
+
+            li.appendChild(title);
+            li.appendChild(date);
+            li.appendChild(startTime);
+            li.appendChild(endTime);
+            li.appendChild(place);
+            li.appendChild(memo);
+            li.appendChild(btns);
+          }
+        }
+      })
+      .getAllSchedule();
   }
 
   function createScheduleList(li, data) {
@@ -122,12 +272,18 @@ function deleteScheduleBtn(eventId,title){
     btns.setAttribute("class", "schedule-btns");
     const scheduleFixBtn = document.createElement("button");
     scheduleFixBtn.innerText = "編集";
-    scheduleFixBtn.setAttribute("onclick", `fixScheduleBtn("${data.eventId}")`);
+    scheduleFixBtn.setAttribute(
+      "onclick",
+      `fixScheduleBtn("${data.eventId}","${data.calendarId}")`
+    );
     scheduleFixBtn.setAttribute("class", "fix-btn");
 
     const scheduleDeleteBtn = document.createElement("button");
     scheduleDeleteBtn.innerText = "削除";
-    scheduleDeleteBtn.setAttribute("onclick", `deleteScheduleBtn("${data.eventId}","${data.title}")`);
+    scheduleDeleteBtn.setAttribute(
+      "onclick",
+      `deleteScheduleBtn("${data.calendarId}","${data.eventId}","${data.title}")`
+    );
     scheduleDeleteBtn.setAttribute("class", "delete-btn");
     btns.appendChild(scheduleFixBtn);
     btns.appendChild(scheduleDeleteBtn);

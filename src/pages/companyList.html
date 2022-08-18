@@ -3,7 +3,7 @@
   <div>
     <div style="padding-top: 1%">
       <button onClick="changeScreen('company-entry')">企業追加</button>
-      <button onClick="changeScreen('schedule-list')">全ての予定</button>
+      <button onClick="allSchedules()">全ての予定</button>
       志望度
       <select id="company-desire" onchange="sortByDesire()">
         <option value="">-</option>
@@ -51,6 +51,8 @@
 
   // スケジュールボタンを押すと、各企業のカレンダーIDをセッションストレージにセットする
   function clickScheduleBtn(id) {
+    const scheduleEntry = document.getElementById("schedule-entry-btn");
+    scheduleEntry.setAttribute("class", "");
     sessionStorage.setItem("id", id);
     schedulelist();
     changeScreen("schedule-list");
@@ -79,7 +81,7 @@
           alert("削除しました");
           const companyList = document.getElementById("companys-list");
           companyList.innerHTML = null;
-          showCompanyList();
+          reloadCompanyList();
         })
         .deleteCalendar(id);
     } else {
