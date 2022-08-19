@@ -1,6 +1,6 @@
 <div id="schedule-list" class="no-display">
   <div class="header">予定一覧</div>
-  <div id="company-name" style=" text-align: center;">全ての予定</div>
+  <div id="company-name" style="text-align: center">全ての予定</div>
   <div style="padding-top: 1%">
     <button
       id="schedule-entry-btn"
@@ -16,7 +16,6 @@
 </div>
 <script>
   function schedulelist() {
-    const companyNameArea=document.getElementById("company-name");
     const calendarId = sessionStorage.getItem("id");
     const withinOneWeek = document.getElementById("within-one-week");
     const scheduleList = document.getElementById("schedule");
@@ -25,7 +24,6 @@
 
     google.script.run
       .withSuccessHandler((data) => {
-        companyNameArea.innerText=data[0].companyName;
         for (let i = 0; i < data.length; i++) {
           const result = judgmentWithinOneWeek(data[i].date);
           if (result == true) {
@@ -300,9 +298,9 @@
     li.appendChild(btns);
   }
 
-  function resetScheduleList(){
-    changeScreen('company-list');
-    const companyNameArea=document.getElementById("company-name");
-    companyNameArea.innerText="全ての予定";
+  function resetScheduleList() {
+    changeScreen("company-list");
+    const companyNameArea = document.getElementById("company-name");
+    companyNameArea.innerText = "全ての予定";
   }
 </script>
