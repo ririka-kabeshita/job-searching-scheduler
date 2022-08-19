@@ -2,7 +2,9 @@
   <div class="header">企業一覧　画面</div>
   <div>
     <div style="padding-top: 1%">
-      <button onClick="changeScreen('company-entry')">企業追加</button>
+      <button onClick="changeScreen('company-entry')" >
+        企業追加
+      </button>
       <button onClick="allSchedules()">全ての予定</button>
       志望度
       <select id="company-desire" onchange="sortByDesire()">
@@ -61,20 +63,16 @@
   //編集ボタンを押すと、企業の名前・志望度を変更できるようにする
   function fixCalendarBtn(id) {
     sessionStorage.setItem("id", id);
-    const companyEntryHeader = document.getElementById("campany-entry-header");
-    companyEntryHeader.innerText = "企業情報の編集";
+    document.getElementById("company-entry-header").innerText = "企業情報の編集";
 
     // 企業登録画面から更新画面への切り替え
-    const companyEntryBtn = document.getElementById("company-entry-btn");
-    companyEntryBtn.setAttribute("class", "no-display");
-    const companyFixBtn = document.getElementById("company-fix-btn");
-    companyFixBtn.setAttribute("class", "");
+    switchBtn("company-entry-btn","company-fix-btn");
     changeScreen("company-entry");
   }
 
   //削除ボタンを押した時の処理
-  function deleteCalendarBtn(id) {
-    const result = window.confirm("本当に削除してもよろしいですか？");
+  function deleteCalendarBtn(id,name) {
+    const result = window.confirm(name+"を削除しますか？");
     if (result == true) {
       google.script.run
         .withSuccessHandler(() => {
@@ -119,7 +117,7 @@
         "deleteBtn",
         "削除",
         "delete-btn",
-        `deleteCalendarBtn("${calendarId}")`
+        `deleteCalendarBtn("${calendarId}","${data[i].name}")`
       );
     }
   }

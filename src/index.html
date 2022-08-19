@@ -20,6 +20,9 @@
       a {
         font-size: large;
       }
+      button {
+        padding: 0.5% 1%;
+      }
       .schedule-btn {
         background-color: rgb(255, 213, 0);
         color: rgb(59, 61, 64);
@@ -29,27 +32,34 @@
         background-color: rgb(39, 166, 45);
         color: aliceblue;
         margin-left: 0.8%;
+        padding: 0.5% 1%;
       }
       .delete-btn {
         background-color: rgb(219, 25, 25);
         color: aliceblue;
         margin-left: 0.8%;
       }
-      .schedule-list{
-        background-color: rgb(220,220,220);
-        width:95%;
+      .schedule-list {
+        background-color: rgb(220, 220, 220);
+        width: 95%;
         padding: 1%;
-        margin-bottom:1%;
+        margin-bottom: 1%;
       }
-      .within-one-week{
-        background-color: #FFE7BF;
-        width:95%;
+      .within-one-week {
+        background-color: #ffe7bf;
+        width: 95%;
         padding: 1%;
-        margin-bottom:1%;
+        margin-bottom: 1%;
       }
-      .schedule-btns{
-        margin-left:90%;
-        
+      .schedule-list-btns {
+        margin-left: 90%;
+      }
+      .schedule-list-btns > .fix-btn {
+        padding: 5% 6%;
+      }
+      .schedule-list-btns > .delete-btn {
+        padding: 5% 6%;
+        margin-left: 3%;
       }
     </style>
   </head>
@@ -86,6 +96,14 @@
           companyEntry.setAttribute("class", "no-display");
           scheduleEntry.setAttribute("class", "");
         }
+      }
+
+      //ボタンの表示・非表示の切り替え
+      function switchBtn(nonDisplay, display) {
+        const displayBtn = document.getElementById(display);
+        displayBtn.setAttribute("class", "");
+        const nonDisplayBtn = document.getElementById(nonDisplay);
+        nonDisplayBtn.setAttribute("class", "no-display");
       }
     </script>
   </body>

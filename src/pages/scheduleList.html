@@ -1,6 +1,7 @@
 <div id="schedule-list" class="no-display">
-  <div class="header">予定一覧　画面</div>
-  <div>
+  <div class="header">予定一覧</div>
+  <div id="company-name" style=" text-align: center;">全ての予定</div>
+  <div style="padding-top: 1%">
     <button
       id="schedule-entry-btn"
       onClick="changeScreen('schedule-entry')"
@@ -8,13 +9,14 @@
     >
       予定作成
     </button>
-    <button onClick="changeScreen('company-list')">企業一覧</button>
+    <button onClick="resetScheduleList()">企業一覧</button>
   </div>
   <ul id="within-one-week"></ul>
   <ul id="schedule"></ul>
 </div>
 <script>
   function schedulelist() {
+    const companyNameArea=document.getElementById("company-name");
     const calendarId = sessionStorage.getItem("id");
     const withinOneWeek = document.getElementById("within-one-week");
     const scheduleList = document.getElementById("schedule");
@@ -23,6 +25,7 @@
 
     google.script.run
       .withSuccessHandler((data) => {
+        companyNameArea.innerText=data[0].companyName;
         for (let i = 0; i < data.length; i++) {
           const result = judgmentWithinOneWeek(data[i].date);
           if (result == true) {
@@ -168,7 +171,7 @@
             memo.innerText = "memo : " + sortResult[i].memo;
 
             const btns = document.createElement("div");
-            btns.setAttribute("class", "schedule-btns");
+            btns.setAttribute("class", "schedule-list-btns");
             const scheduleFixBtn = document.createElement("button");
             scheduleFixBtn.innerText = "編集";
             scheduleFixBtn.setAttribute(
@@ -219,7 +222,7 @@
             memo.innerText = "memo : " + sortResult[i].memo;
 
             const btns = document.createElement("div");
-            btns.setAttribute("class", "schedule-btns");
+            btns.setAttribute("class", "schedule-list-btns");
             const scheduleFixBtn = document.createElement("button");
             scheduleFixBtn.innerText = "編集";
             scheduleFixBtn.setAttribute(
@@ -269,7 +272,7 @@
     memo.innerText = "memo : " + data.memo;
 
     const btns = document.createElement("div");
-    btns.setAttribute("class", "schedule-btns");
+    btns.setAttribute("class", "schedule-list-btns");
     const scheduleFixBtn = document.createElement("button");
     scheduleFixBtn.innerText = "編集";
     scheduleFixBtn.setAttribute(
@@ -295,5 +298,11 @@
     li.appendChild(place);
     li.appendChild(memo);
     li.appendChild(btns);
+  }
+
+  function resetScheduleList(){
+    changeScreen('company-list');
+    const companyNameArea=document.getElementById("company-name");
+    companyNameArea.innerText="全ての予定";
   }
 </script>

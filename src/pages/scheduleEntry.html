@@ -33,6 +33,7 @@ if(!title | !date | !startTime | !finishTime){
       alert("予定の登録を完了しました");
       schedulelist();
       reloadScheduleEntryForm();
+      switchBtn("fix-schedule-btn","save-schedule-btn");
     }).createSchedule(calendarId,title,date,startTime,finishTime,place,memo);
  }
 }
@@ -56,6 +57,7 @@ if(!title | !date | !startTime | !finishTime){
       alert("予定を更新しました");
       schedulelist();
       reloadScheduleEntryForm();
+      switchBtn("fix-schedule-btn","save-schedule-btn");
     }).fixCompanySchedule(calendarId,eventId,title,date,startTime,finishTime,place,memo);
  }
 }
@@ -72,10 +74,9 @@ function reloadScheduleEntryForm(){
       document.getElementById("schedule").value=null;
       const scheduleEntryHeader = document.getElementById("schedule-entry-header");
       scheduleEntryHeader.innerText = "予定の登録";
-      const saveScheduleBtn=document.getElementById("save-schedule-btn");
-      saveScheduleBtn.setAttribute("class","");
-      const fixScheduleBtn=document.getElementById("fix-schedule-btn");
-      fixScheduleBtn.setAttribute("class","no-display");
+            switchBtn("fix-schedule-btn","save-schedule-btn");
       changeScreen('schedule-list');
 } 
+
+
 </script>
