@@ -9,7 +9,7 @@ function doGet() {
  */
 function createCompanyCalendar(companyName, companyDesire) {
   const result = checkSameCompany(companyName);
-  if (result == true) {
+  if (result === true) {
     const options = { createdBy: "就活スケジュール管理 " };
     options.aspiration = companyDesire;
     const optionsJson = JSON.stringify(options);
@@ -55,7 +55,14 @@ function deleteCalendar(calendarId) {
  * @returns ない場合はtrue,ある場合はnull
  */
 function checkSameCompany(companyName) {
-  const companyCalender = getAllCompanys();
+  const calendars = CalendarApp.getAllOwnedCalendars();
+  const companyCalender = [];
+  for (let i = 0; i < calendars.length; i++) {
+    const calendarsDiscription = calendars[i].getDescription();
+    if (calendarsDiscription.match("就活スケジュール管理")) {
+      companyCalender.push(calendars[i].getName());
+    }
+  }
   const result = companyCalender.includes(companyName);
   if (result == false) {
     return true;
@@ -77,6 +84,7 @@ function getAllCompanys() {
       companyCalender.push(calendars[i]);
     }
   }
+  // console.log(companyCalender[1].getName());
   return companyCalender;
 }
 

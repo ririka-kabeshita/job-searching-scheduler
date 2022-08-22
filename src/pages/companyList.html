@@ -2,7 +2,9 @@
   <div class="header">企業一覧　画面</div>
   <div>
     <div style="padding-top: 1%">
-      <button onClick="changeScreen('company-entry')">企業追加</button>
+      <button onClick="changeScreen('company-entry')" >
+        企業追加
+      </button>
       <button onClick="allSchedules()">全ての予定</button>
       志望度
       <select id="company-desire" onchange="sortByDesire()">
@@ -16,12 +18,12 @@
   </div>
 </div>
 <script>
-  const companyList = document.getElementById("companys-list");
+  const companyListArea = document.getElementById("companys-list");
   // 会社一覧の初期画面
   function reloadCompanyList() {
     google.script.run
       .withSuccessHandler((data) => {
-        showCompany(data, companyList);
+        showCompany(data, companyListArea);
       })
       .getCompanysInfo();
   }
@@ -30,55 +32,53 @@
   // 志望度を変更した時の処理
   function sortByDesire() {
     const companyDesire = document.getElementById("company-desire").value;
-    while (companyList.lastChild) {
-      companyList.removeChild(companyList.lastChild);
+    while (companyListArea.lastChild) {
+      companyListArea.removeChild(companyListArea.lastChild);
     }
     google.script.run
       .withSuccessHandler((data) => {
-        showCompany(data, companyList);
+        showCompany(data, companyListArea);
       })
       .getCompanysByDesire(companyDesire);
   }
 
   //スケジュール・削除・編集ボタンの作成
-  function createBtn(companyList, btnName, inner, className, btnFunction) {
+  function createBtn(companyListArea, btnName, inner, className, btnFunction) {
     const btn = document.createElement("button");
     btn.setAttribute("class", className);
     btn.innerHTML = inner;
     btn.setAttribute("onclick", btnFunction);
-    companyList.appendChild(btn);
+    companyListArea.appendChild(btn);
   }
 
   // スケジュールボタンを押すと、各企業のカレンダーIDをセッションストレージにセットする
-  function scheduleBtn(id, name) {
-    document.getElementById("company-name").innerText = `${name}`;
+  function scheduleBtn(id,name) {
+    document.getElementById("company-name").innerText=`${name}`;
     const scheduleEntry = document.getElementById("schedule-entry-btn");
     scheduleEntry.setAttribute("class", "");
     sessionStorage.setItem("id", id);
     schedulelist();
-
+    
     changeScreen("schedule-list");
   }
 
   //編集ボタンを押すと、企業の名前・志望度を変更できるようにする
   function fixCalendarBtn(id) {
     sessionStorage.setItem("id", id);
-    document.getElementById("company-entry-header").innerText =
-      "企業情報の編集";
+    document.getElementById("company-entry-header").innerText = "企業情報の編集";
     // 企業登録画面から更新画面への切り替え
-    switchBtn("company-entry-btn", "company-fix-btn");
+    switchBtn("company-entry-btn","company-fix-btn");
     changeScreen("company-entry");
   }
 
   //削除ボタンを押した時の処理
-  function deleteCalendarBtn(id, name) {
-    const result = window.confirm(name + "を削除しますか？");
+  function deleteCalendarBtn(id,name) {
+    const result = window.confirm(name+"を削除しますか？");
     if (result == true) {
       google.script.run
         .withSuccessHandler(() => {
           alert("削除しました");
-          const companyList = document.getElementById("companys-list");
-          companyList.innerHTML = null;
+          companyListArea.innerHTML = null;
           reloadCompanyList();
         })
         .deleteCalendar(id);
@@ -91,19 +91,19 @@
   function showCompany(data, companyList) {
     for (let i = 0; i < data.length; i++) {
       const companys = document.createElement("li");
-      companyList.appendChild(companys);
       const company = document.createElement("a");
-      company.innerText = data[i].name;
-      const companyName = company.innerText;
-      companys.appendChild(company);
+      const companyName = data[i].name;
       const calendarId = data[i].id;
+      companyListArea.appendChild(companys);
+      company.innerText = companyName;
+      companys.appendChild(company);
 
       createBtn(
         company,
         "scheduleBtn",
         "スケジュール",
         "schedule-btn",
-        `scheduleBtn("${calendarId}","${data[i].name}")`
+        `scheduleBtn("${calendarId}","${companyName}")`
       );
       createBtn(
         company,
@@ -117,7 +117,7 @@
         "deleteBtn",
         "削除",
         "delete-btn",
-        `deleteCalendarBtn("${calendarId}","${data[i].name}")`
+        `deleteCalendarBtn("${calendarId}","${companyName}")`
       );
     }
   }
