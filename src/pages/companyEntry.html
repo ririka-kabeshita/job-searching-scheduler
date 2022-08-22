@@ -18,10 +18,8 @@
   function createCalendar(){
     switchBtn("company-fix-btn","company-entry-btn");
     const companyName = document.getElementById('input-company-name').value;
-    const desire = document.form.desire;
-    const num = desire.selectedIndex;
-    const desireValue = desire.options[num].value;
-    if(!companyName |!desireValue){
+    const desireValue=document.getElementById("desire").selectedIndex;
+    if(!companyName || !desireValue){
       alert("企業名と志望度を入力してください");
     }else{
       google.script.run.withSuccessHandler((data)=>{
@@ -39,14 +37,12 @@
   function fixCalendar(){
     const calendarId=sessionStorage.getItem("id");
     const companyName = document.getElementById('input-company-name').value;
-    const desire = document.form.desire;
-    const num = desire.selectedIndex;
-    const desireValue = desire.options[num].value;
-        if(!companyName |!desireValue){
+    const desireValue=document.getElementById("desire").selectedIndex;
+    if(!companyName ||　!desireValue){
       alert("企業名と志望度を入力してください");
     }else{
       google.script.run.withSuccessHandler((data)=>{
-        console.log(data);
+        // console.log(data);
         alert(data ?　"企業情報を更新しました" : "同じ企業名のカレンダーが存在します"); 
         
         resetCompanyEntry();
