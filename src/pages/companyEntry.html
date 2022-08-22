@@ -38,13 +38,11 @@
     const calendarId=sessionStorage.getItem("id");
     const companyName = document.getElementById('input-company-name').value;
     const desireValue=document.getElementById("desire").selectedIndex;
-    if(!companyName ||　!desireValue){
+    if(!companyName || !desireValue){
       alert("企業名と志望度を入力してください");
     }else{
       google.script.run.withSuccessHandler((data)=>{
-        // console.log(data);
-        alert(data ?　"企業情報を更新しました" : "同じ企業名のカレンダーが存在します"); 
-        
+        alert(data ? "企業情報を更新しました" : "同じ企業名のカレンダーが存在します"); 
         resetCompanyEntry();
         // 企業一覧画面の初期化
         const companyList = document.getElementById("companys-list");

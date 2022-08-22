@@ -71,20 +71,6 @@ function checkSameCompany(companyName) {
   }
 }
 
-// function checkSameCompany(companyName) {
-//   const companyCalender = getCompanysInfo();
-//   // console.log(companyCalender[1].name);
-//   for(let i=0;i<companyCalender.length;i++){
-//   const checkResult = companyCalender[i].name.includes(companyName);
-//   if (checkResult === false) {
-//     return true;
-//   } else {
-//     return null;
-//   }
-//   }
-//   }
-
-
 /**
  * "就活スケジュール管理"に該当するカレンダーを全て取得
  * @returns 全てのカレンダー
@@ -98,7 +84,6 @@ function getAllCompanys() {
       companyCalender.push(calendars[i]);
     }
   }
-  // console.log(companyCalender[1].getName());
   return companyCalender;
 }
 
