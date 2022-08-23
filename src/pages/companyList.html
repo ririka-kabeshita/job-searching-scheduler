@@ -17,15 +17,18 @@
 </div>
 <script>
   const companyListArea = document.getElementById("companys-list");
-  // 会社一覧の初期画面
-  function reloadCompanyList() {
+
+  // 会社一覧を再描画
+  function resetCompanyList() {
+    companyListArea.innerHTML = null;
+
     google.script.run
       .withSuccessHandler((data) => {
         showCompany(data, companyListArea);
       })
       .getCompanysInfo();
   }
-  reloadCompanyList();
+  resetCompanyList();
 
   // 志望度を変更した時の処理
   function sortByDesire() {
@@ -49,21 +52,22 @@
     companyListArea.appendChild(btn);
   }
 
-  // スケジュールボタンを押すと、各企業のカレンダーIDをセッションストレージにセットする
+  // スケジュールボタンを押したときの処理
   function scheduleBtn(id, name) {
-    document.getElementById("company-name").innerText = `${name}`;
+    // 予定作成のボタンの表示
     const scheduleEntry = document.getElementById("schedule-entry-btn");
     scheduleEntry.setAttribute("class", "");
+    
+    document.getElementById("company-name").innerText = `${name}`;
     sessionStorage.setItem("id", id);
     schedulelist();
     changeScreen("schedule-list");
   }
 
-  //編集ボタンを押すと、企業の名前・志望度を変更できるようにする
+  //編集ボタンを押したときの処理
   function fixCalendarBtn(id) {
     sessionStorage.setItem("id", id);
-    document.getElementById("company-entry-header").innerText =
-      "企業情報の編集";
+    document.getElementById("company-entry-header").innerText = "企業情報の編集";
     google.script.run
       .withSuccessHandler((data) => {
         for (let i = 0; i < data.length; i++) {
@@ -71,12 +75,11 @@
             document.getElementById("input-company-name").value = data[i].name;
             const description = JSON.parse(data[i].description);
             document.getElementById("desire").value = description.aspiration;
-          } else {
-            null;
           }
         }
       })
       .getCompanysInfo();
+
     // 企業登録画面から更新画面への切り替え
     switchBtn("company-entry-btn", "company-fix-btn");
     changeScreen("company-entry");
@@ -90,7 +93,7 @@
         .withSuccessHandler(() => {
           alert("削除しました");
           companyListArea.innerHTML = null;
-          reloadCompanyList();
+          resetCompanyList();
         })
         .deleteCalendar(id);
     } else {

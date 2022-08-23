@@ -15,25 +15,23 @@
   <button onClick="resetCompanyEntry()" style="margin-top:1%;">企業一覧</button>
 </div>
 <script>
+  // 企業名でカレンダーを作成する
   function createCalendar(){
     switchBtn("company-fix-btn","company-entry-btn");
     const companyName = document.getElementById('input-company-name').value;
-    const desireValue=document.getElementById("desire").selectedIndex;
+    const desireValue=document.getElementById("desire").value;
     if(!companyName || !desireValue){
       alert("企業名と志望度を入力してください");
     }else{
       google.script.run.withSuccessHandler((data)=>{
         alert(data ?"企業情報を登録しました" : "同じ企業名のカレンダーが存在します"); 
         resetCompanyEntry();
-         // 企業一覧画面の初期化
-        const companyList = document.getElementById("companys-list");
-        companyList.innerHTML=null;
-
-        reloadCompanyList();
+        resetCompanyList();
         }).createCompanyCalendar(companyName,desireValue);
     }
   }
 
+  // カレンダー名を編集する
   function fixCalendar(){
     const calendarId=sessionStorage.getItem("id");
     const companyName = document.getElementById('input-company-name').value;
@@ -44,24 +42,17 @@
       google.script.run.withSuccessHandler((data)=>{
         alert(data ? "企業情報を更新しました" : "同じ企業名のカレンダーが存在します"); 
         resetCompanyEntry();
-        // 企業一覧画面の初期化
-        const companyList = document.getElementById("companys-list");
-        companyList.innerHTML=null;
-
-        reloadCompanyList();
+        resetCompanyList();
       }).fixCompanyCalendar(companyName,desireValue,calendarId);
     }
   }
 
 //企業情報登録画面の初期化
 function resetCompanyEntry(){
-  //企業情報登録formの初期化
   document.getElementById('input-company-name').value=null;
   document.getElementById('desire').value=null;
-  //企業情報登録buttonとheaderの初期化
   document.getElementById("company-entry-header").innerText="企業情報の登録";
   switchBtn("company-fix-btn","company-entry-btn");
-  //企業一覧へ遷移
   changeScreen('company-list');
 }
 </script>
