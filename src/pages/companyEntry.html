@@ -1,10 +1,10 @@
 <div id="company-entry" class="no-display">
-  <div class="header" id="campany-entry-header">企業情報の登録</div>
+  <div class="header" id="company-entry-header">企業情報の登録</div>
   <form style="padding-top: 1%;" name="form">
-    企業名 <input id="company-name" type="text" placeholder="企業名を入力してください" style="width:400px;" >
+    企業名 <input id="input-company-name" type="text" placeholder="企業名を入力してください" style="width:400px;" >
     </br>
     志望度 <select name="desire" id="desire">
-      <option value="">-</option>
+      <option value=null>-</option>
       <option value="high">高</option>
       <option value="middle">中</option>
       <option value="low">低</option>
@@ -12,63 +12,47 @@
 </form>
     <button id="company-entry-btn" type="button" onClick="createCalendar()" style="margin-top:1%;">登録</button></br>
     <button id="company-fix-btn" type="button"  style="margin-top:1%;" class="no-display" onclick="fixCalendar()">更新</button></br>
-  <button onClick="reloadCompanyEntry()" style="margin-top:1%;">企業一覧</button>
+  <button onClick="resetCompanyEntry()" style="margin-top:1%;">企業一覧</button>
 </div>
 <script>
+  // 企業名でカレンダーを作成する
   function createCalendar(){
-    const companyEntryBtn=document.getElementById("company-entry-btn");
-    companyEntryBtn.setAttribute("class","");
-    const companyFixBtn=document.getElementById("company-fix-btn");
-    companyFixBtn.setAttribute("class","no-display");
-    const companyName = document.getElementById('company-name').value;
-    const desire = document.form.desire;
-    const num = desire.selectedIndex;
-    const desireValue = desire.options[num].value;
-   
-    if(!companyName |!desireValue){
+    switchBtn("company-fix-btn","company-entry-btn");
+    const companyName = document.getElementById('input-company-name').value;
+    const desireValue=document.getElementById("desire").value;
+    if(!companyName || !desireValue){
       alert("企業名と志望度を入力してください");
     }else{
       google.script.run.withSuccessHandler((data)=>{
-        alert(data ?'登録を完了しました' : '同じ企業名のカレンダーが存在します'); 
-        document.getElementById('company-name').value=null;
-        document.getElementById('desire').value="-";
-        const companyList = document.getElementById("companys-list");
-        companyList.innerHTML=null;
-        reloadCompanyList();
+        alert(data ?"企業情報を登録しました" : "同じ企業名のカレンダーが存在します"); 
+        resetCompanyEntry();
+        resetCompanyList();
         }).createCompanyCalendar(companyName,desireValue);
     }
   }
 
+  // カレンダー名を編集する
   function fixCalendar(){
-    const companyName = document.getElementById('company-name').value;
-    const desire = document.form.desire;
-    const num = desire.selectedIndex;
-    const desireValue = desire.options[num].value;
     const calendarId=sessionStorage.getItem("id");
-        if(!companyName |!desireValue){
+    const companyName = document.getElementById('input-company-name').value;
+    const desireValue=document.getElementById("desire").selectedIndex;
+    if(!companyName || !desireValue){
       alert("企業名と志望度を入力してください");
     }else{
       google.script.run.withSuccessHandler((data)=>{
-        alert(data ?'企業情報を変更しました' : '同じ企業名のカレンダーが存在します'); 
-        document.getElementById('company-name').value=null;
-        document.getElementById('desire').value='';
-        reloadCompanyEntry();
-        // 企業一覧画面の初期化
-        const companyList = document.getElementById("companys-list");
-        companyList.innerHTML=null;
-        reloadCompanyList();
-        changeScreen("company-list");
+        alert(data ? "企業情報を更新しました" : "同じ企業名のカレンダーが存在します"); 
+        resetCompanyEntry();
+        resetCompanyList();
       }).fixCompanyCalendar(companyName,desireValue,calendarId);
     }
   }
 
-function reloadCompanyEntry(){
-  const companyEntryHeader=document.getElementById("campany-entry-header");
-  companyEntryHeader.value="企業情報の登録";
-  const companyEntryBtn=document.getElementById("company-entry-btn");
-  companyEntryBtn.setAttribute("class","");
-  const companyFixBtn=document.getElementById("company-fix-btn");
-  companyFixBtn.setAttribute("class","no-display");
+//企業情報登録画面の初期化
+function resetCompanyEntry(){
+  document.getElementById('input-company-name').value=null;
+  document.getElementById('desire').value=null;
+  document.getElementById("company-entry-header").innerText="企業情報の登録";
+  switchBtn("company-fix-btn","company-entry-btn");
   changeScreen('company-list');
 }
 </script>

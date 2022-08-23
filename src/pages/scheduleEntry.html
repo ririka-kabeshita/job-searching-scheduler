@@ -11,10 +11,11 @@
       <button onClick="saveSchedule()"style="margin-bottom:1%" id="save-schedule-btn">登録</button>
       <button onClick="fixSchedule()"style="margin-bottom:1%" id="fix-schedule-btn" class="no-display">更新</button>
   <div>
-    <button onClick="reloadScheduleEntryForm()">予定一覧</button>
+    <button onClick="resetScheduleEntryForm()">予定一覧</button>
   </div>
 </div>
 <script>
+  // スケジュールの登録
 function saveSchedule(){
   const calendarId=sessionStorage.getItem('id');
   const title=document.getElementById('title').value;
@@ -32,11 +33,12 @@ if(!title | !date | !startTime | !finishTime){
   google.script.run.withSuccessHandler((data)=>{
       alert("予定の登録を完了しました");
       schedulelist();
-      reloadScheduleEntryForm();
+      resetScheduleEntryForm();
     }).createSchedule(calendarId,title,date,startTime,finishTime,place,memo);
  }
 }
 
+// スケジュールの更新
  function fixSchedule() {
   const calendarId=sessionStorage.getItem('id');
   const eventId=sessionStorage.getItem('eventId');
@@ -55,13 +57,13 @@ if(!title | !date | !startTime | !finishTime){
     google.script.run.withSuccessHandler((data)=>{
       alert("予定を更新しました");
       schedulelist();
-      reloadScheduleEntryForm();
+      resetScheduleEntryForm();
     }).fixCompanySchedule(calendarId,eventId,title,date,startTime,finishTime,place,memo);
  }
 }
 
 //予定登録画面の初期化
-function reloadScheduleEntryForm(){
+function resetScheduleEntryForm(){
       document.getElementById('title').value=null;
       document.getElementById('date').value=null;
       document.getElementById('start-time').value=null;
@@ -72,10 +74,7 @@ function reloadScheduleEntryForm(){
       document.getElementById("schedule").value=null;
       const scheduleEntryHeader = document.getElementById("schedule-entry-header");
       scheduleEntryHeader.innerText = "予定の登録";
-      const saveScheduleBtn=document.getElementById("save-schedule-btn");
-      saveScheduleBtn.setAttribute("class","");
-      const fixScheduleBtn=document.getElementById("fix-schedule-btn");
-      fixScheduleBtn.setAttribute("class","no-display");
+      switchBtn("fix-schedule-btn","save-schedule-btn");
       changeScreen('schedule-list');
 } 
 </script>
